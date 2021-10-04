@@ -1,7 +1,212 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<meta charset="utf-8">
+	<title>Card learning</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<style type="text/css">
+
+		html {
+			height: 100%;
+		}
+
+		body { 
+			font-family: sans-serif;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			margin: 0;
+		}
+
+		.scene {
+		  width: 250px;
+		  height: 350px;
+		  perspective: 600px;
+		}
+
+		.card {
+		  width: 100%;
+		  height: 100%;
+		  border-radius: 10px;
+		  transition: transform 1s;
+		  transform-style: preserve-3d;
+		  cursor: pointer;
+		  position: relative;
+		  box-shadow: 0px 0px 49px 0px rgba(184,182,184,1);
+		}
+
+		.card.is-flipped {
+		  transform: rotateY(180deg);
+		}
+
+		.card__face {
+		  position: absolute;
+		  border-radius: 10px;
+		  width: 100%;
+		  height: 100%;
+		  line-height: 350px;
+		  color: white;
+		  text-align: center;
+		  font-weight: bold;
+		  font-size: 35px;
+		  -webkit-backface-visibility: hidden;
+		  backface-visibility: hidden;
+		}
+
+		.card__face--front {
+		  background: linear-gradient(to right, #a8ff78, #78ffd6);
+		}
+
+		.card__face--back {
+		  background: linear-gradient(to right, #4e54c8, #8f60b3);
+		  transform: rotateY(180deg);
+		}
+	</style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+	<div class="scene scene--card">
+	  <div class="card">
+	    <div class="card__face card__face--front"><p>front</p></div>
+	    <div class="card__face card__face--back"><p>back</p></div>
+	  </div>
+	</div>
 </body>
+<script type="text/javascript">
+	let text = `Woeful : triste
+Duty : devoir
+Tale : compte
+Elder : aîné
+Elderly : âgé
+Discard : jeter
+Nearly : presque
+Fill up : remplir
+Bite : mordre
+Sharp : pointu
+Shriek : cri
+Banquer : banquier
+Trudge : marcher péniblement
+Thorough: minutieux
+Within : dans
+Unfold : dérouler
+Before : devant
+Reel : embobiner/étourdi
+Spyglass : longue vue
+Yet : encore/ mais
+Fear : craindre
+Walk out : partir brusquement
+Estate : propriété
+Relative : un proche/parent
+Dear : Cher (dér)
+Either : non plus/l’un ou l’autre
+Neither : Non plus/aucun
+Either or : soit - ou
+Neither nor : ni - ni
+Trade : metier
+Isn’t it : n’est ce pas
+Beloved : bien aimé
+Bunch : groupe - s’entasser
+Gloomy : sombre/lugubre
+Glum : morose
+Awful : affreux
+Schmuck : con
+Burden : fardeau
+Be ashamed : être honteux
+Hiccup : hoquet
+Guardianship : tutelle
+Guardian : tuteur
+Hearing : audience
+Abode : residence
+Fancy : rafiné/envie de
+TLC : tender loving care
+Trust : fait confiance
+Rumpus : tapage
+I am told : on me dit que
+Bring up : amené/élever
+In no time : en un rien de temps
+Nighty-night : bonne nuit les enfants
+Often : souvent
+For instance : par exemple
+Fetch : aller chercher
+Orphans : orphelins
+Chore : tâche (shore)
+Stalk off : s’en aller avec arrogance
+Haughty : arrogant
+Kidney : rein
+Strainer : passoire
+Silly : stupide
+Saucepan : casserole
+Courtesy : courtoisie
+Roast : roti
+Gladly : volontiers
+Thumbtacks : punaise
+Hideous : hideux
+Nuts : fou
+Slip : glissement/bordereau
+Choke up : avoir la gorge serrée
+Guilty : coupable
+Tough : dur
+Make it up to : se faire pardonner
+Treat : friandise/cadeau/traiter
+Squeal : crier
+Whom : qui (une personne)
+Schedule : horaire
+Deceased : décès
+Trump : battre
+All in a day’s work : je n’ai fait que mon travail 
+Toward : en direction de 
+What lie ahead for : ce qui attend 
+Cautious : prudent
+Chitchat: bavarder
+Pick out : choisir
+Gut : du ventre
+Rid of : débarrasser
+Fellow : mec / confrère
+Few : quelques
+Fewer : moins de
+Lecture : conférence
+Ribbon : machine à écrire
+Jammed : bloqué
+Harm : faire du mal
+Softy : mauviette
+Misnomer : terme inapproprié
+Stuffed : empaillé/rassasié
+10 out of 10 : /10/10
+Stepfather : beau père
+Meanwhile : entre temps`,
+		line = text.split('\n'),
+		handler = [],
+		dictionary = []
+
+	for (var i = 0; i < line.length; i++) {
+		handler = line[i].split(':')
+		dictionary = dictionary.concat(handler)
+	}
+
+	let card = document.querySelector('.card'),
+		frontText = document.querySelector('.card__face--front'),
+		backText = document.querySelector('.card__face--back'),
+		cardState,
+		randomOrder,
+		index = 1
+
+	frontText.innerHTML = dictionary[0]
+
+	card.addEventListener( 'click', function() {
+
+		if (cardState == 'front') {
+			randomOrder = Math.round(Math.random())
+			card.classList.remove('is-flipped')
+			cardState = 'back'
+			frontText.innerHTML = dictionary[(randomOrder == 0) ? index + 1 : index]
+		} else {
+			card.classList.add('is-flipped');
+			cardState = 'front'
+			backText.innerHTML = dictionary[(randomOrder == 0) ? index - 1 : index]
+		}
+
+		index++
+		if (index > dictionary.length - 1) { index = 0 }
+	});
+</script>
 </html>
