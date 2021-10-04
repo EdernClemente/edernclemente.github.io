@@ -175,11 +175,12 @@ Stuffed : empaillé/rassasié
 Stepfather : beau père
 Meanwhile : entre temps`,
 		line = text.split('\n'),
+	    	shuffledLine = line.sort((a, b) => 0.5 - Math.random()),
 		handler = [],
 		dictionary = []
 
-	for (var i = 0; i < line.length; i++) {
-		handler = line[i].split(':')
+	for (var i = 0; i < shuffledLine.length; i++) {
+		handler = shuffledLine[i].split(':')
 		dictionary = dictionary.concat(handler)
 	}
 
