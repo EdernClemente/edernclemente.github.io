@@ -1,0 +1,374 @@
+/*========== VARIABLES CSS ==========*/
+:root {
+  /*========== Colors ==========*/
+  --body-color: #191919;
+  --text-color:  white;
+
+  /*========== Font and typography ==========*/
+  --body-font: 'Helvetica', sans-serif;
+  --big-font-size:  3rem;
+  --medium-font-size:  1.3rem;
+  --normal-font-size: .938rem;
+  --small-font-size: .75rem;
+  --smaller-font-size: .75rem;
+
+  /*========== Font weight ==========*/
+  --font-medium: 500;
+  --font-semi-bold: 600;
+
+  /*========== z index ==========*/
+  --z-fixed: 1;
+
+  /*========== Box shadows ==========*/
+  --soft-shadow: 0px 2px 12px #c7c8cb;
+  --blue-soft-shadow : 0px 2px 12px #a1a8dd;
+  --soft-shadow-hover: 0px 2px 25px #c7c8cb;
+  --blue-soft-shadow-hover : 0px 2px 25px #a1a8dd;
+}
+
+@media screen and (min-width: 1024px) {
+  :root {
+    --medium-font-size:  1.4rem;
+    --normal-font-size: 1.2rem;
+    --small-font-size: .875rem;
+    --smaller-font-size: .813rem;
+  }
+}
+
+/*========== BASE ==========*/
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--body-font);
+  font-size: var(--normal-font-size);
+  background-color: var(--body-color);
+  color: var(--text-color);
+  margin: 20px;
+}
+
+a {
+  text-decoration: none;
+}
+
+/*========== INFOS SECTION ==========*/
+#computed-infos-container p {
+  display: inline;
+  margin-right: 10px;
+}
+
+.big-button {
+  background-image: linear-gradient(135deg, #008aff, #86d472);
+  border-radius: 6px;
+  color: var(--text-color);
+  display: block;
+  height: 50px;
+  width: 7em;
+  font-size: var(--normal-font-size);
+  font-weight: var(--font-semi-bold);
+  padding: 4px;
+  margin: 0px 30px;
+  position: relative;
+}
+
+.big-button:hover {
+  cursor: pointer;
+}
+
+.big-button span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0e0e10;
+  border-radius: 6px;
+  height: 100%;
+  width: 100%;
+  transition: background 0.5s ease;
+}
+
+.big-button:hover span {
+  background: transparent;
+}
+
+#button-container .big-button:nth-child(1) {
+  margin-left: 0;
+}
+
+#button-container div {
+  display: flex;
+}
+
+#button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+#section-infos p {
+  font-size: var(--medium-font-size);
+}
+
+.negative-value {
+  color: #008aff;
+}
+
+.positive-value {
+  color: #86d472;
+}
+
+#object-slice {
+  width: 765px;
+  height: 765px;
+  background-color: white;
+  margin: auto;
+}
+
+#object-slice table {
+  width: 100%;
+  height: 100%;
+  border-spacing: 0;
+  border: 0;
+}
+
+#object-slice tbody {
+  border-spacing: 0;
+}
+
+.object-row {
+  height: 45px;
+}
+
+.object-column {
+  width: 45px;
+  max-width: 45px;
+  border: solid black 1px;
+  background-color: blue;
+  text-align: center;
+}
+
+.matrix #object-slice {
+  width: 600px;
+  height: 600px;
+  background-color: unset;
+  margin: auto;
+  border-right: solid white 2px;
+  border-left: solid white 2px;
+}
+
+.matrix #object-slice table {
+  width: 100%;
+  height: 100%;
+  border-spacing: 0;
+  border: 0;
+}
+
+.matrix #object-slice tbody {
+  border-spacing: 0;
+}
+
+.matrix .object-row {
+  height: 35px;
+}
+
+.matrix .object-column {
+  width: 35px;
+  max-width: 35px;
+  border: unset;
+  background-color: unset;
+  text-align: center;
+  font-size: 12px;
+}
+
+.matrix .object-row:nth-child(1) .object-column:nth-child(1) {
+  border-top: solid white 2px;
+}
+
+.matrix .object-row:nth-child(1) .object-column:nth-child(17) {
+  border-top: solid white 2px;
+}
+
+.matrix .object-row:nth-child(17) .object-column:nth-child(1) {
+  border-bottom: solid white 2px;
+}
+
+.matrix .object-row:nth-child(17) .object-column:nth-child(17) {
+  border-bottom: solid white 2px;
+}
+.math {
+  text-align: center;
+  font-size: var(--medium-font-size);
+}
+
+.button-link {
+  text-decoration: none;
+}
+
+.btns {
+  background-color: #ff9035;
+  background-image: linear-gradient(135deg, #008aff, #86d472);
+  height: 50px;
+  width: 400px;
+  max-width: 100%;
+  border-radius: 40px;
+  display: block;
+}
+
+.btns input {
+  display: none;
+}
+
+.btns label {
+  display: table;
+  float: left;
+  padding: 0;
+  width: 20%;
+  height: 100%;
+  margin: 0;
+  text-align: center;
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.btns label:first-child {
+  border-left: none;
+  border-radius: 40px 0 0 40px;
+}
+
+.btns label:last-child {
+  border-radius: 0 40px 40px 0;
+}
+
+.btns .btn {
+  font-size: 17px;
+  cursor: pointer;
+  width: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  font-weight: 300;
+  color: #FFF;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: inset 0 30px 20px -20px rgba(255, 255, 255, 0.15);
+  transition: color 250ms cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 250ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+}
+
+.btns .btn:hover {
+  box-shadow: inset 0 30px 30px -20px rgba(50, 50, 50, 0.02);
+  transition: all 250ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.btns .btn:after {
+  content: "✔";
+  margin-left: -10px;
+  display: inline-block;
+  transform: scale(0);
+  transition: margin 250ms cubic-bezier(0.6, -0.28, 0.735, 0.045) 100ms, transform 250ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+}
+
+.btns .first {
+  border-radius: 40px 0 0 40px;
+}
+
+.btns .last {
+  border-radius: 0 40px 40px 0;
+}
+
+.btns input:checked + .btn {
+  color: #232323;
+  text-shadow: none;
+  background-image: linear-gradient(to top, rgba(25, 25, 25, 0) 65%, rgba(25, 25, 25, 0.08));
+  box-shadow: inset 0 10px 50px rgba(25, 25, 25, 0.08);
+  transition: color 500ms cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 150ms;
+}
+
+.btns input:checked + .btn:after {
+  margin-left: 12px;
+  transform: scale(1.25);
+  transition: transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275) 250ms, margin 500ms;
+}
+
+#legend-container {
+  display: flex;
+  justify-content: center;
+}
+
+#legend-container p {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+#legend-container span {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+}
+
+#legend-container p:nth-child(2) span {
+  background-color: rgb(115, 185, 244);
+}
+
+#legend-container p:nth-child(3) span {
+  background-color: #3884c5;
+}
+
+#legend-container p:nth-child(4) span {
+  background-color: rgb(84, 232, 170);
+}
+
+#legend-container p:nth-child(5) span {
+  background-color: rgb(152, 250, 127);
+}
+
+#legend-container p:nth-child(6) span {
+  background-color: rgb(138, 203, 122);
+}
+
+#display-power, #display-energy {
+  display: inline-block;
+  min-width: 70px;
+}
+
+/*========= ARTCILE =========*/
+article {
+  padding: 30px 300px;
+}
+
+article h1 {
+  font-size: var(--big-font-size);
+  background: -webkit-linear-gradient(180deg, #008aff, #86d472);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+article img {
+  width: 70%;
+  display: block;
+  margin: auto;
+}
+
+article .larger-img {
+  width: 100%;
+}
+
+article p {
+  text-align: justify;
+}
+
+article .credit {
+  color: gray;
+  text-align: center;
+  font-style: italic;
+}
+
+/*========== CANVAS ==========*/
+
+article #legend-container p:nth-child(3) .square-shape {
+  background-color: rgb(115, 185, 244);
+}
+
+article #legend-container p:nth-child(3) .square-shape {
+  background-color: rgb(138, 203, 122);
+}
+
+article #legend-container p:nth-child(4) .square-shape {
+  background-color: #fc3f85;
+}
