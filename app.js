@@ -185,6 +185,7 @@ function updatePower(mode) {
 		case'0/1':
 			temperatureValue = objectSliceList[8][8][1].temperature[1]
 			temperatureValue < data.setPoint ? data.power = data.maxPower : data.power = 0
+			break
 		case'P':
 			K = -0.7
 			B = 2.1
