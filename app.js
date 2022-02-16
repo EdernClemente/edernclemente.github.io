@@ -21,23 +21,23 @@ let data = {
 	G = {name: 'glass', color: '#98fa7f', temperature: data.initTemp, cp: 720, lambda: 1, rho: 2530},
 	I = {name: 'insulation', color: '#3884c5', temperature: data.initTemp, cp: 1020, lambda: 0.6, rho: 400},
 	objectSliceList =	[[[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A]],
-						 [[A],[A],[A],[A],[A],[A],[I],[I],[I],[I],[I],[A],[A],[A],[A],[A],[A]],
-						 [[A],[A],[A],[A],[I],[I],[C],[C],[C],[C],[C],[I],[I],[A],[A],[A],[A]],
-						 [[A],[A],[A],[I],[C],[C],[G],[G],[G],[G],[G],[C],[C],[I],[A],[A],[A]],
-						 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
-						 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
-						 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
-						 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
-						 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
-						 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
-						 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
-						 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
-						 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
-						 [[A],[A],[A],[I],[C],[C],[G],[G],[G],[G],[G],[C],[C],[I],[A],[A],[A]],
-						 [[A],[A],[A],[A],[I],[I],[C],[C],[C],[C],[C],[I],[I],[A],[A],[A],[A]],
-						 [[A],[A],[A],[A],[A],[A],[I],[I],[I],[I],[I],[A],[A],[A],[A],[A],[A]],
-						 [[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A]]
-						]
+				 [[A],[A],[A],[A],[A],[A],[I],[I],[I],[I],[I],[A],[A],[A],[A],[A],[A]],
+		 		 [[A],[A],[A],[A],[I],[I],[C],[C],[C],[C],[C],[I],[I],[A],[A],[A],[A]],
+				 [[A],[A],[A],[I],[C],[C],[G],[G],[G],[G],[G],[C],[C],[I],[A],[A],[A]],
+				 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
+				 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
+				 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
+				 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
+				 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
+				 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
+				 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
+				 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
+				 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
+				 [[A],[A],[A],[I],[C],[C],[G],[G],[G],[G],[G],[C],[C],[I],[A],[A],[A]],
+				 [[A],[A],[A],[A],[I],[I],[C],[C],[C],[C],[C],[I],[I],[A],[A],[A],[A]],
+				 [[A],[A],[A],[A],[A],[A],[I],[I],[I],[I],[I],[A],[A],[A],[A],[A],[A]],
+				 [[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A]]
+				]
 
 /*========== VIEWS ==========*/
 
@@ -246,10 +246,10 @@ function setFoValues() {
 					elementValues.foAboveAndBelow 	= 0
 					break;
 				default:
-					elementValues.foNorth 			= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row - 1][column][0].lambda))
-					elementValues.foSouth 			= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row + 1][column][0].lambda))
-					elementValues.foWest 			= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row][column - 1][0].lambda))
-					elementValues.foEast 			= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row][column + 1][0].lambda))		
+					elementValues.foNorth 		= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row - 1][column][0].lambda))
+					elementValues.foSouth 		= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row + 1][column][0].lambda))
+					elementValues.foWest 		= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row][column - 1][0].lambda))
+					elementValues.foEast 		= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row][column + 1][0].lambda))		
 					elementValues.foAboveAndBelow 	= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / A.lambda))
 			}
 
