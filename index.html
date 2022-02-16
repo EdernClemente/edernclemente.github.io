@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Projet de technique numérique</title>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<section id="section-infos">
+		<div id="button-container">
+			<div>
+				<a href="index.html" class="big-button replay"><span>Réinitialiser</span></a>
+				<a class="big-button pause"><span>Pause</span></a>
+				<a class="big-button play"><span>Play</span></a>
+			</div>
+			<div>
+				<div class='btns'>
+			      <label>
+			        <input checked='' name="button-group" class="regulation-off-mode" type='radio'>
+			          <span class='btn first'>Off</span>
+			        </input>
+			      </label>
+			      <label>
+			        <input name='button-group' class="regulation-on-mode" type='radio'>
+			          <span class='btn'>100%</span>
+			        </input>
+			      </label>
+			      <label>
+			        <input name='button-group' class="regulation-on-off-mode" type='radio'>
+			          <span class='btn'>0/1</span>
+			        </input>
+			      </label>
+			      <label>
+			        <input name='button-group' class="regulation-p-mode" type='radio'>
+			          <span class='btn'>P</span>
+			        </input>
+			      </label>
+			      <label>
+			        <input name='button-group' class="regulation-pi-mode" type='radio'>
+			          <span class='btn last'>PI</span>
+			        </input>
+			      </label>
+			    </div>
+			</div>
+		</div>
+		<div id="timer-container">
+			<p><strong>Temps :</strong> <span id="day-count"></span> jours, <span id="hour-count"></span> heures, <span id="minute-count"></span> minutes, <span id="sec-count"></span> secondes.</p>
+		</div>
+		<div id="computed-infos-container">
+			<p><strong>Puissance filament :</strong> <span id="display-power" class="negative-value"></span></p>
+			<p><strong>Energie consommée :</strong> <span id="display-energy">0.00 Wh</span></p>
+			<p><strong>Consigne :</strong> <span id="display-energie">3°C</span></p>
+		</div>
+		<div id="legend-container">
+			<p>Légende :</p>
+			<p><span class="square-shape"></span>Air</p>
+			<p><span class="square-shape"></span>Isolant</p>
+			<p><span class="square-shape"></span>Cuivre (Résistance)</p>
+			<p><span class="square-shape"></span>Verre</p>
+			<p><span class="square-shape"></span>Mesure</p>
+		</div>
+	</section>
+	<main id="app-section">
+		<!--<div id="object-slice">
+			<table>
+				<tbody>
+					<tr class="object-row">
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+						<td class="object-square"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>-->
+	</main>
+	<article>
+		<canvas class="canvas-function" width="620" height="400"></canvas>
+		<p class="credit">Pensez à activer la boucle pour voir le graphique s'animer.</p>
+		<div id="legend-container">
+			<p>Légende :</p>
+			<p><span class="square-shape"></span>Consigne</p>
+			<p><span class="square-shape"></span>Verre (centre)</p>
+			<p><span class="square-shape"></span>Cuivre</p>
+		</div>
+
+		<h1>Introduction</h1>
+		<p>Pour mieux comprendre ce projet, il est nécessaire de plonger dans le vaste univers de l’astrophotographie, et des techniques utilisées pour capturer les astres. Prendre des photos de l’espace de bonne facture requiert de nombreuses connaissances dans le monde numérique, de la photographie, de la physique et de l’astronomie. Mais alors, comment ça marche ?<p>
+
+		<p>Tout d’abord, une photo de la Voie lactée, ou de n’importe quel élément du ciel ne se prend pas en une photo, puisqu’elle n’aurait pas assez d’informations, et les mouvements de l’atmosphère seraient bien trop présents pour distinguer un quelconque détail. Pour arriver à des photos détaillées, sans trop de bruit numérique, il est nécessaire de réaliser des poses longues d’environ 20/30 secondes par prise, et de faire une grande succession d’images qui seront assemblées en post-production. Moins l’astre est lumineux, plus il faudra de photo pour obtenir les détails croustillants qu’il contient. </p>
+
+		<h2>Photos de la Voie lactée :</h2>
+
+		<img src="img/milky-way-1.jpg">
+		<p class="credit">C. Edern Clemente - 30 secondes d’exposition par photo x 30 prises</p>
+
+		<img src="img/milky-way-2.jpg">
+		<p class="credit">C. Edern Clemente - 30 secondes d’exposition par photo x 30 prises</p>
+
+		<p>Nous pouvons observer que le temps de prise de ces photos n’est pas très long car la Voie lactée est très lumineuse (30x30=900s). Cela se fait donc relativement rapidement, sans besoin de matériel particulier si ce n’est un trépied et un appareil photo équipé d’un objectif à grande ouverture. Les photos sont ensuite assemblées à l’aide d’un logiciel qui se charge d’empiler l’ensemble, en alignant les étoiles correctement (car la terre tourne).</p>
+
+		<p>Dans le cas des photos de plus longue durée c’est une toute autre histoire :</p>
+
+		<img src="img/orion.jpg">
+		<p class="credit">C. Ronan Clemente - 120 secondes d’exposition par photo x 600 prises</p>
+
+		<img src="img/rosette.jpg">
+		<p class="credit">C. Ronan Clemente - 120 secondes d’exposition par photo x 800 prises</p>
+
+		<p>Vous comprendrez alors que cela pose des problèmes logistiques : Comment laisser le matériel photo dehors toute la nuit ? Comment éviter les mouvements du ciel lors de la pose longue ? Comment éviter la condensation de se déposer sur l’objectif ?</p>
+
+		<h2>Suivi de la rotation terrestre :</h2>
+
+		<p>Pour que notre appareil photo suive la rotation terrestre nous utilisons une monture motorisée qui réalisera les mouvements de façon lente et permettra au champs de l’objectif de suivre précisément les étoiles désirées. Photo ci-dessous :</p>
+
+		<img src="img/monture.jpg">
+
+		<p>Pour assurer ce suivi, nous utilisons une caméra de guidage qui informera le PC ou la Raspberry Pi des corrections à effectuer. Photo ci-dessous :</p>
+
+		<img src="img/guidage.jpg">
+
+		<p>Une fois la Raspberry Pi informée de la position des étoiles par la lunette de guidage, le logiciel PHD2 se chargera de traiter les données, et de communiquer les informations à la monture par ses 2 ports : accélérer ou ralentir. Voici une photo du logiciel :</p>
+
+		<img src="img/PHD2.jpg">
+
+		<h2>Eviter la buée sur la lunette :</h2>
+
+		<p>Les photos étant prise la nuit, l’air ambiant est souvent saturé avec une forte hygrométrie relative et une température basse. Ainsi, de la condensation va se former sur le matériel placé à l’extérieur, et également sur les verres de l’objectif ou de la lunette. Or, comme nous souhaitons prendre des photos les plus détaillées possibles, avoir un voile de buée devant un élément qui nous permet de capturer l’image est évidemment une chose à proscrire. Pour éviter cela nous installons alors une résistance chauffante autour de l’objectif pour garder la température du matériel au dessus du point de rosée et éviter la condensation sur celui-ci. C’est précisément ce que nous étudierons dans ce projet.</p>
+
+		<img src="img/dew_heater.png">
+		<p class="credit">Dew heater, puissance 10W, température max : 60°C</p>
+
+		<p>Pour réaliser notre régulation nous prendrons des hypothèses sur les températures et l’hygrométrie de notre point extérieur. Après avoir réalisé des recherches météos, nous prendrons un point d’air extérieur classique de : 6 degrés Celsius ; 80% d’humidité.</p>
+
+		<p>Ainsi notre <strong>point de rosé</strong>, selon le diagramme de l’air humide en python dans les fichiers du projet est de <strong>3°C</strong></p>
+
+		<p>Petite précision : ces résistances ne sont jamais régulées en puissance pour réaliser des économies d’énergie. Mais pour complexifier l’étude nous réaliserons une régulation de puissance suivant les méthodes vu en cours de régulation.</p>
+
+		<h1>Détermination du modèle</h1>
+
+		<p>Pour étudier la température de notre verre, nous devons d’abord nous fixer un modèle physique relativement simple et réaliste. Pour cela, intéressons-nous d’abord à comment est réalisé l’objectif :</p>
+
+		<img src="img/objectif.png">
+
+		<p>Nous pouvons observer que l’objectif est relativement simple à traduire en modèle, en revanche la partie en aluminium est beaucoup plus complexe car elle possède des vides d’air. Cela nécessiterait donc un plus grand nombre de cubes pour considérer la non-homogénéité de l’élément. Nous ne le prendrons donc pas en compte. En revanche, la résistance en cuivre est entourée de tissus pour la protéger, que nous considèrerons dans le modèle :</p>
+
+		<img src="img/lunette-modele.jpg">
+		<p class="credit">Rendu 3D sous blender</p>
+
+		<p>Comme nous pouvons le voir ci-dessus, le modèle physique choisi est beaucoup plus simple. Au centre nous avons du verre, dont le point central sera notre point de mesure. A noter que le diamètre de l'objectif est de 0.005 * 11 = 5.5cm. Le verre est entouré d'une résistance en cuivre qui se chargera de le maintenir à température pour éviter la condensation. Puis, nous considérerons le tissus isolant placé autour du cuivre : au dessus, en dessous et sur les côtés. Notre modèle sera donc en 3D et prendra en compte l'air autour de lui qui évoluera de façon sinusoïdale (jour type d'hiver).</p>
+
+		<h1>Méthode de calcul</h1>
+		<h2>Recherche des équations</h2>
+
+		<p>Pour réaliser notre méthode de calcul j'ai appliqué la méthode vu en cours de techniques numériques, mais qui, cette fois, sera réalisée en 3D. Cette méthode se base sur un ensemble de cubes, de résistances thermiques différentes et sur lesquels leurs températures à l'instant T+1 sont basées sur les autres cubes adjacents à l’instant t. Puisque nos variables sont à l’instant t, et non t+1 - en explicite donc - nous aurons des problèmes de divergence et ne pouvons pas augmenter le pas de temps indéfiniment. Cela nous empêchera par exemple d’avancer très vite dans le temps, et d'analyser le modèle et ses limites sur plusieurs jours.</p>
+
+		<img src="img/modele-physique.jpg">
+		<p class="credit">Rendu 3D sous blender</p>
+
+		<p>Nous pouvons voir sur l’image ci-dessus que la résistance thermique comprendra en réalité 2 lambda, 1 pour chaque matériau, et donc une épaisseur divisée par 2 pour chaque lambda.</p>
+
+		<p>Commençons par exprimer un bilan en régime transitoire :</p>
+		
+		<img src="img/equation_nbr_0.png">
+
+		<p>Nos échanges étant conducto-convectifs, pour simplifier les choses, nous ramènerons h à un lambda équivalent. Cela nous permettra d'avoir des matrices simples. L’accumulation du matériau sera exprimée par m* Cp * dT. La puissance fournie quant à elle sera celle distribuée par les cubes de cuivre par effet Joule. Nous obtenons donc :</p>
+		
+		<img class="larger-img" src="img/equation_nbr_1.png">
+
+		<p>Isolons alors T+ de notre équation :</p>
+		
+		<img class="larger-img" src="img/equation_nbr_2.png">
+
+		<p>Nous pouvons voir que nous arrivons à une expression assez longue qui sera difficile et longue à exprimer dans notre code Javascript. Pour simplifier les choses nous utiliserons le nombre de Fourier : Fo = sigma * dt / L^2. Cela nous permettra d'isoler nos constantes et de ne pas faire des calculs inutiles à chaque itération. Nous obtenons alors pour Fourier Nord par exemple :</p>
+
+		<img src="img/equation_nbr_3.png">
+
+		<p>Une fois Fourier introduit et calculé pour chacune des orientations nous pouvons alors définir T+ plus simplement :</p>
+
+		<img class="larger-img" src="img/equation_nbr_4.png">
+		
+		<p>Attention : Il faudra veiller à ce que le terme devant le T ne soit jamais inférieur à 0 sinon notre suite divergera.</p>
+
+		<h1>Traduction du code</h1>
+		<h2>L'objet data</h2>
+
+		<p>Pour raisonner de manière logique, il convient d’abord de définir les principales données du projet. Je les ai compilées dans un objet data pour plus de praticité (j'ai choisi de fonctionner partiellement en Model View Controller pour faciliter la lisibilité du code) :</p>
+
+		<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #999999; font-style: italic">//Toutes la valeurs peuvent être éditées pour adapter le projet</span>
+<span style="color: #6ab825; font-weight: bold">let</span> <span style="color: #d0d0d0">data</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">{</span>
+	<span style="color: #d0d0d0">initTemp:</span> <span style="color: #d0d0d0">(</span><span style="color: #3677a9">5</span> <span style="color: #d0d0d0">*</span> <span style="color: #24909d">Math</span><span style="color: #d0d0d0">.sin(</span><span style="color: #3677a9">3</span><span style="color: #d0d0d0">)).toFixed(</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">),</span>
+	<span style="color: #d0d0d0">time:</span> <span style="color: #3677a9">0</span><span style="color: #d0d0d0">,</span>
+	<span style="color: #d0d0d0">dt:</span> <span style="color: #3677a9">0.1054</span><span style="color: #d0d0d0">,</span> <span style="color: #999999; font-style: italic">//Max 0.1054 sinon divergence</span>
+	<span style="color: #d0d0d0">dx:</span> <span style="color: #3677a9">0.005</span><span style="color: #d0d0d0">,</span> <span style="color: #999999; font-style: italic">//dx = dy = dz</span>
+	<span style="color: #d0d0d0">lambdaEqExt:</span> <span style="color: #3677a9">0.005</span> <span style="color: #d0d0d0">*</span> <span style="color: #3677a9">15</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span><span style="color: #d0d0d0">,</span> <span style="color: #999999; font-style: italic">//dx * hair / 2</span>
+	<span style="color: #d0d0d0">volume:</span> <span style="color: #24909d">Math</span><span style="color: #d0d0d0">.pow(</span><span style="color: #3677a9">0.005</span><span style="color: #d0d0d0">,</span> <span style="color: #3677a9">3</span><span style="color: #d0d0d0">),</span>
+	<span style="color: #d0d0d0">computing:</span> <span style="color: #6ab825; font-weight: bold">false</span><span style="color: #d0d0d0">,</span><span style="color: #999999; font-style: italic">//On ne calcul pas dès le début</span>
+	<span style="color: #d0d0d0">computeTime:</span> <span style="color: #3677a9">2</span><span style="color: #d0d0d0">,</span> <span style="color: #999999; font-style: italic">//Temps entre les itérations</span>
+	<span style="color: #d0d0d0">maxPower:</span> <span style="color: #3677a9">7</span><span style="color: #d0d0d0">/</span><span style="color: #3677a9">36</span><span style="color: #d0d0d0">,</span> <span style="color: #999999; font-style: italic">//Nous avons 36 cubes de cuivre</span>
+	<span style="color: #d0d0d0">power:</span> <span style="color: #3677a9">0</span><span style="color: #d0d0d0">,</span>
+	<span style="color: #d0d0d0">powerMode:</span> <span style="color: #ed9d13">&#39;0&#39;</span><span style="color: #d0d0d0">,</span>
+	<span style="color: #d0d0d0">setPoint:</span> <span style="color: #3677a9">3</span><span style="color: #d0d0d0">,</span><span style="color: #999999; font-style: italic">//Consigne</span>
+	<span style="color: #d0d0d0">consumption:</span> <span style="color: #3677a9">0</span><span style="color: #d0d0d0">,</span>
+	<span style="color: #d0d0d0">temperatureList:</span> <span style="color: #d0d0d0">{centerTemperature:</span> <span style="color: #d0d0d0">[],</span> <span style="color: #d0d0d0">copperTemperature:</span> <span style="color: #d0d0d0">[]},</span><span style="color: #999999; font-style: italic">//Pour tracer le graphique</span>
+	<span style="color: #d0d0d0">offsetSum:</span> <span style="color: #3677a9">0</span><span style="color: #999999; font-style: italic">//Integrale de e(t) de 0 à t</span>
+<span style="color: #d0d0d0">}</span>
+</pre></div>
+
+		<h2>Propriétés du modèle</h2>
+
+		<p>Dans un deuxième temps nous enregistrons les différentes propriétés de nos matériaux dans un objet. Toutes les valeurs proviennent de table physique, sauf pour l’isolant autour du cuivre dont je n'avais pas d’information, hormis qu’il s’agit d’une sorte de tissu peu efficace thermiquement. J'ai donc modifié les valeurs de masse volumique et de résistance thermique pour s’adapter au produit.</p>
+
+		<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #d0d0d0">A</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">{name:</span> <span style="color: #ed9d13">&#39;air&#39;</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">color:</span> <span style="color: #ed9d13">&#39;#73b9f4&#39;</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">temperature:</span> <span style="color: #d0d0d0">data.initTemp,</span> <span style="color: #d0d0d0">cp:</span> <span style="color: #3677a9">1004</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">lambda:</span> <span style="color: #d0d0d0">data.lambdaEqExt</span>,</span> <span style="color: #d0d0d0">rho:</span> <span style="color: #3677a9">1.3</span><span style="color: #d0d0d0">},</span>
+<span style="color: #d0d0d0">C</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">{name:</span> <span style="color: #ed9d13">&#39;copper&#39;</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">color:</span> <span style="color: #ed9d13">&#39;#54e8aa&#39;</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">temperature:</span> <span style="color: #d0d0d0">data.initTemp,</span> <span style="color: #d0d0d0">cp:</span> <span style="color: #3677a9">380</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">lambda:</span> <span style="color: #3677a9">401</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">rho:</span> <span style="color: #3677a9">8960</span><span style="color: #d0d0d0">},</span>
+<span style="color: #d0d0d0">G</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">{name:</span> <span style="color: #ed9d13">&#39;glass&#39;</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">color:</span> <span style="color: #ed9d13">&#39;#98fa7f&#39;</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">temperature:</span> <span style="color: #d0d0d0">data.initTemp,</span> <span style="color: #d0d0d0">cp:</span> <span style="color: #3677a9">720</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">lambda:</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">rho:</span> <span style="color: #3677a9">2530</span><span style="color: #d0d0d0">},</span>
+<span style="color: #d0d0d0">I</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">{name:</span> <span style="color: #ed9d13">&#39;insulation&#39;</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">color:</span> <span style="color: #ed9d13">&#39;#3884c5&#39;</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">temperature:</span> <span style="color: #d0d0d0">data.initTemp,</span> <span style="color: #d0d0d0">cp:</span> <span style="color: #3677a9">1020</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">lambda:</span> <span style="color: #3677a9">0.6</span><span style="color: #d0d0d0">,</span> <span style="color: #d0d0d0">rho:</span> <span style="color: #3677a9">400</span><span style="color: #d0d0d0">},</span>
+</pre></div>
+
+		<p>Ensuite, il est important de stocker les informations de l’agencement des cubes. Pour cela nous utiliserons des arrays. De cette façon nous pouvons utiliser différents patterns et les éditer suivant nos envies :</p>
+
+		<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #d0d0d0">objectSliceList</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">[[[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[A],[A],[A],[A],[I],[I],[I],[I],[I],[A],[A],[A],[A],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[A],[A],[I],[I],[C],[C],[C],[C],[C],[I],[I],[A],[A],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[A],[I],[C],[C],[G],[G],[G],[G],[G],[C],[C],[I],[A],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[A],[I],[C],[C],[G],[G],[G],[G],[G],[C],[C],[I],[A],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[A],[A],[I],[I],[C],[C],[C],[C],[C],[I],[I],[A],[A],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[A],[A],[A],[A],[I],[I],[I],[I],[I],[A],[A],[A],[A],[A],[A]],</span>
+		   <span style="color: #d0d0d0">[[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A]]</span>
+		  <span style="color: #d0d0d0">]</span>
+</pre></div>
+
+		<h2>Calcul par intervalle</h2>
+
+		<p>En termes de code, nous fonctionnons à l’aide d’une intervalle (inarrêtable), qui appelle une fonction toutes les x millisecondes. Si vous souhaitez changer le temps d’appel de la fonction, donc la rapidité de calcul vous pouvez le régler dans l’objet data qui contient toutes les données du projet. Voici donc le rendu de la boucle :</p>
+
+		<!-- Rendu de console -->
+		<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #999999; font-style: italic">//Nous appellons notre Handler qui se charge de la réflexion  principale</span>
+<span style="color: #6ab825; font-weight: bold">function</span> <span style="color: #d0d0d0">updateHandler()</span> <span style="color: #d0d0d0">{</span>
+<span style="color: #999999; font-style: italic">// Si nous sommes en pause nous ne faisons rien (setInterval en JS n&#39;est pas arrêtable autrement)</span>
+	<span style="color: #6ab825; font-weight: bold">if</span><span style="color: #d0d0d0">(data.computing</span> <span style="color: #d0d0d0">==</span> <span style="color: #6ab825; font-weight: bold">false</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">{</span> <span style="color: #6ab825; font-weight: bold">return</span> <span style="color: #d0d0d0">}</span>
+<span style="color: #999999; font-style: italic">//Nous calculons toutes les matrices</span>
+	<span style="color: #d0d0d0">updatePower(data.powerMode)</span>
+	<span style="color: #d0d0d0">updateTemperatureValues()</span>
+	<span style="color: #d0d0d0">updateTime()</span>
+	<span style="color: #d0d0d0">updateEnergy()</span>
+	<span style="color: #d0d0d0">updateOffsetSum()</span>
+
+<span style="color: #999999; font-style: italic">//Nous affichons toutes les valeurs</span>
+	<span style="color: #d0d0d0">updateTimeView(data.time)</span>
+	<span style="color: #d0d0d0">updatePowerView(data.power)</span>
+	<span style="color: #d0d0d0">updateEnergyView(data.consumption)</span>
+<span style="color: #d0d0d0">}</span>
+<span style="color: #999999; font-style: italic">//Notre intervalle appelle la fonction updateHandler() toutes les x millisecondes</span>
+<span style="color: #d0d0d0">setInterval(updateHandler,</span> <span style="color: #d0d0d0">data.computeTime)</span>
+</pre></div>
+	
+		<h2>Evolution de la température extérieure</h2>
+		<p>Notre température évoluera en fonction d’un sinus réalisé pour l‘occasion :</p>
+
+		<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #d0d0d0">item.temperature[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">5</span> <span style="color: #d0d0d0">*</span> <span style="color: #24909d">Math</span><span style="color: #d0d0d0">.sin((</span><span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">86400</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.time</span> <span style="color: #d0d0d0">*</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">*</span> <span style="color: #24909d">Math</span><span style="color: #d0d0d0">.PI</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">3</span><span style="color: #d0d0d0">)</span>
+</pre></div>
+	
+		<h2>Mise en equation du modèle</h2>
+		<p>Maintenant que nous avons défini comment vont fonctionner nos données, et comment les fonctions sont appelées, nous nous intéressons désormais à la mise en équation de notre modèle. Pour cela, comme nous avons défini préalablement nos équations, nous avons plus qu’à les appliquer en sachant que le cuivre devra intégrer la puissance délivrée, et l’air n’aura pas de température définie autrement que par un sinus.</p>
+
+		<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #d0d0d0">item.foNorth</span> 		<span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.dt</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">(data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.rho</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.cp</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">(</span><span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">item.lambda</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">objectSliceList[row</span> <span style="color: #d0d0d0">-</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][square][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].lambda))</span>
+<span style="color: #d0d0d0">item.foSouth</span> 		<span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.dt</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">(data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.rho</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.cp</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">(</span><span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">item.lambda</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">objectSliceList[row</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][square][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].lambda))</span>
+<span style="color: #d0d0d0">item.foWest</span> 		<span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.dt</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">(data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.rho</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.cp</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">(</span><span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">item.lambda</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">objectSliceList[row][square</span> <span style="color: #d0d0d0">-</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].lambda))</span>
+<span style="color: #d0d0d0">item.foEast</span> 		<span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.dt</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">(data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.rho</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.cp</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">(</span><span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">item.lambda</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">objectSliceList[row][square</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].lambda))</span>
+<span style="color: #d0d0d0">item.foAboveAndBelow</span> 	<span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.dt</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">(data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.rho</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.cp</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">(</span><span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">item.lambda</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">A.lambda))</span>
+
+<span style="color: #999999; font-style: italic">//Le Fo pour le cuivre doit prendre en compte le lambda de l&#39;isolant</span>
+<span style="color: #6ab825; font-weight: bold">if</span><span style="color: #d0d0d0">(item.name</span> <span style="color: #d0d0d0">==</span> <span style="color: #ed9d13">&#39;copper&#39;</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">{item.foAboveAndBelow</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.dt</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">(data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.dx</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.rho</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.cp</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">(</span><span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">item.lambda</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">I.lambda))</span> <span style="color: #d0d0d0">}</span>
+
+<span style="color: #999999; font-style: italic">//Ne doit jamais être &lt; 0 sinon divergence</span>
+<span style="color: #d0d0d0">item.stabilityValue</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">(</span><span style="color: #3677a9">1</span> <span style="color: #d0d0d0">-</span> <span style="color: #d0d0d0">item.foNorth</span> <span style="color: #d0d0d0">-</span> <span style="color: #d0d0d0">item.foSouth</span> <span style="color: #d0d0d0">-</span>  <span style="color: #d0d0d0">item.foWest</span> <span style="color: #d0d0d0">-</span> <span style="color: #d0d0d0">item.foEast</span> <span style="color: #d0d0d0">-</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.foAboveAndBelow)</span>
+
+<span style="color: #d0d0d0">item.temperature[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">item.stabilityValue</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">item.foNorth</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">objectSliceList[row</span> <span style="color: #d0d0d0">-</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][square][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">item.foSouth</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">objectSliceList[row</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][square][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">item.foWest</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">objectSliceList[row][square</span> <span style="color: #d0d0d0">-</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">item.foEast</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">objectSliceList[row][square</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.foAboveAndBelow</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">objectSliceList[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span>
+
+<span style="color: #999999; font-style: italic">//Le cuivre doit prendre en compte la puissance de la résistance et la température de l&#39;isolant au dessus et en dessous</span>
+<span style="color: #6ab825; font-weight: bold">if</span><span style="color: #d0d0d0">(item.name</span> <span style="color: #d0d0d0">==</span> <span style="color: #ed9d13">&#39;copper&#39;</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">{item.temperature[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">item.stabilityValue</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">item.foNorth</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">objectSliceList[row</span> <span style="color: #d0d0d0">-</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][square][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">item.foSouth</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">objectSliceList[row</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][square][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">item.foWest</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">objectSliceList[row][square</span> <span style="color: #d0d0d0">-</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">item.foEast</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">objectSliceList[row][square</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.foAboveAndBelow</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">objectSliceList[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">6</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.dt</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">(item.rho</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">item.cp</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.volume)}</span>
+
+<span style="color: #d0d0d0">item.temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">item.temperature[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">]</span>
+</pre></div>
+
+	<p>Le code est en réalité très différent de ce qui est présenté, mais je l'ai simplifié pour mieux comprendre la démarche. Par exemple les nombres de Fourier ne sont calculés qu'au début car il s'agit de constantes, je calcule également le graphique de température en fonction du temps, les matrices... Le code est bien plus complet donc je vous invite à le regarder pour comprendre en profondeur comment les choses fonctionnent.</p>
+
+	<h1>Présentation des résultats</h1>
+
+	<p>Dès lors que notre modèle a été mis en équation, nous pouvons passer à la présentation des résultats. Pour cela nous allons vérifier nos matrices, afin de montrer comment elles s’agencent et ce qui nous permet de valider notre logique et la justesse du code. La première chose à vérifier est d'abord si nos lambdas sont attribués à la bonne case. Pour cela il suffit d'afficher la matrice correspondante :</p> 
+
+	<p class="math">Lambda =</p>
+	<div class="matrix lambda"></div>
+
+	<p>Nos lambdas étant correctement attribués, nous allons ensuite pouvoir calculer nos nombres de Fourier en fonction de chacune des orientations. Il est important de tous les vérifier afin de s'assurer qu'il n'y a pas d'erreur de calcul. Par exemple voici le Fourier Nord de notre matrice :</p>
+
+	<p class="math">FoN =</p>
+	<div class="matrix foNorth"></div>
+
+	<p>Nous pouvons observer que les cases qui diffèrent sont les valeurs impactées par la cellule Nord, ce qui prouve au minimum que notre ciblage des cellules nord est bon. Même exemple pour le Fourier Est :</p>
+	
+	<p class="math">FoE =</p>
+	<div class="matrix foEast"></div>
+
+	<p>Nous pouvons observer que c’est le même cas qu’avant, mais ce sont les valeurs à l’est qui sont ciblées. Ce qui prouve également notre ciblage de nos cellules à droite.</p>
+
+	<p class="math">FoS =</p>
+	<div class="matrix foSouth"></div>
+
+	<p class="math">FoW =</p>
+	<div class="matrix foWest"></div>
+
+	<p class="math">FoAB =</p>
+	<div class="matrix foAboveAndBelow"></div>
+
+	<p>Une fois les nombres de Fourier vérifiés, une valeur extrêmement importante à vérifier est la valeur de stabilité. Si elle est inférieure à 0 sur n’importe quelle case, notre modèle ne sera pas stable et il faudra adapter le pas dt.</p>
+
+	<p class="math">Stabilité =</p>
+	<div class="matrix stabilityValue"></div>
+
+	<p>Dans le cas présent, nous pouvons voir que nos valeurs sont bonnes et que notre système sera stable. C'est le cas pour une certaine valeur de dt, qui semble assez faible et ne nous permet pas d'accélerer le temps à l'infini. Maintenant que nous avons vérifié toutes nos matrices, et que nos températures T et T+1 fonctionnent à l'aide du terme de puissance apportée, nous allons passer à la régulation de la puissance.</p>
+
+	<h1>Régulation</h1>
+
+	<h2>Appareil éteint</h2>
+	
+	<p>Si l'appareil est éteint, il est évident que la puissance fournie par le dew heater à la lunette est nulle. Il suffit alors de définir la puissance P nulle en tout temps. Pour cela j'ai réalisé une fonction qui, suivant le mode de régulation, se charge de réaliser le code associé. Ainsi, pour la partie P = 0 nous avons :</p>
+
+	<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">case</span> <span style="color: #ed9d13">&#39;0&#39;</span><span style="color: #d0d0d0">:</span>
+	<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0</span>
+	<span style="color: #6ab825; font-weight: bold">break</span>
+</pre></div>
+
+	<p>Jusque-là, rien de complexe. La puissance sera nulle en tout temps.</p>
+
+	<h2>Appareil à pleine puissance</h2>
+	
+	<p>Dans le cas de la pleine puissance, nous avons le même raisonnement que lorsque l'appareil est éteint, sauf que la puissance délivrée doit être la puissance maximale que peut donner notre appareil. Dans notre cas nous sommes face à une résistance soumise à un courant électrique créant un effet joule (P = R x I^2).</p>
+
+	<p>Nous estimons alors la puissance thermique délivrée au modèle de 7W (ce qui sont des valeurs classiques pour des dew heaters).</p>
+
+	<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">case</span> <span style="color: #ed9d13">&#39;100&#39;</span><span style="color: #d0d0d0">:</span>
+	<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.maxPower</span>
+	<span style="color: #6ab825; font-weight: bold">break</span>
+</pre></div>
+
+	<p>Nous attribuons à la puissance thermique réelle la valeur maximale stockée dans l'objet data. Attention elle devra être divisée par le nombre de cube de cuivre du modèle. Elle ne sera pas de 7W pour chaque cube.</p>
+
+	<h2>Régulation TOR</h2>
+
+	<p>La régulation TOR, dans sa plus simple expression, devrait s'exprimer de cette manière : lorsque l'on est en dessous de la consigne on déclanche la régulation à 100%, et lorsque l'on est au dessus on arrête la régulation. Ceci serait le mode le plus simple, mais pour rajouter une plage de réglage nous introduisons un delta que nous pourrons ajuster. Il s'exprime alors comme le schéma ci-dessous :</p>
+
+	<img src="img/TOR.png">
+
+	<p>Un delta égale à 0 pourrait être tout à fait possible, en revanche nous prendrons un delta égale à 0.25 pour le schématiser. Nous obtenons alors le code suivant :</p>
+
+	<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">case</span><span style="color: #ed9d13">&#39;0/1&#39;</span><span style="color: #d0d0d0">:</span>
+<span style="color: #999999; font-style: italic">//Le delta est une valeur terrain (entre 0 et 1 en général)</span>
+	<span style="color: #d0d0d0">delta</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0.25</span>
+	<span style="color: #d0d0d0">temperatureValue</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">objectSliceList[</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">]</span><span style="color: #999999; font-style: italic">//Température au centre du verre -&gt; colonne 8 ligne 8</span>
+
+	<span style="color: #6ab825; font-weight: bold">if</span><span style="color: #d0d0d0">(temperatureValue</span> <span style="color: #d0d0d0">&lt;</span> <span style="color: #d0d0d0">data.setPoint</span> <span style="color: #d0d0d0">-</span> <span style="color: #d0d0d0">delta / 2)</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.maxPower</span>
+	<span style="color: #d0d0d0">}</span> <span style="color: #6ab825; font-weight: bold">else</span> <span style="color: #6ab825; font-weight: bold">if</span> <span style="color: #d0d0d0">(temperatureValue</span> <span style="color: #d0d0d0">&gt;</span> <span style="color: #d0d0d0">data.setPoint</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">delta / 2)</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0</span>
+	<span style="color: #d0d0d0">}</span>
+	<span style="color: #6ab825; font-weight: bold">break</span>
+</pre></div>
+
+	<h2>Régulation P</h2>
+
+	<p>La régulation P vient apporter un peu plus de logique dans la régulation, voire beaucoup plus. Elle constitue une vraie amélioration dans la démarche, avec une valeur de consigne beaucoup plus respectée que les autres méthodes. Pour cela, nous allons utiliser une fonction y = ax + b pour laquelle nous déterminerons a et b. Nous pouvons illustrer cela par un schéma :</p>
+
+	<img src="img/P_mode.png">
+
+	<p>Comme nous pouvons le voir, il faudra prendre en compte que notre fonction est bornée entre 0 et 1 en y. Pour calculer nos paramètres nous pouvons tout d'abord aborder l'équation qui régit le mode proportionnel :</p>
+
+	<img class="larger-img" src="img/equation_nbr_5_white.png">
+
+	<p>Une fois notre équation déterminée, et entrée dans notre programme, nous allons devoir déterminer nos constantes. En effet y(t) étant notre variable, nous ne connaissons pas les autres valeurs hormis la valeur de consigne y_c(t). Pour les déterminer, nous allons utiliser la méthode de Broïda qui se base sur la recherche de t28% et t40%.</p>
+
+	<h3>Pourquoi utiliser une méthode graphique ?</h3>
+
+	<p>Pour déterminer nos variables nous pourrions réaliser un bilan sur le verre et trouver les échanges et les interactions avec le centre. Puis, une fois le modèle caractérisé physiquement nous pourrions en déduire les valeurs. En revanche cette méthode est longue et fastidieuse. Approcher ces valeurs par la méthode de Broïda est plus utile et plus rapide en pratique, d'autant que nous avons une précision machine grâce à notre ordinateur.</p>
+
+	<p>La méthode se base sur la recherche de 3 points en appliquant un échelon unitaire de puissance à notre système. Pour vulgariser, nous mettons notre système à l'équilibre, puis mettons notre puissance à 100% et regardons vers quelle température maximale le centre du verre va tendre : cela nous donnera T infini. Une fois T infini trouvé, nous devons déterminer le temps pour lequel nous arrivons à 0.4 * Tinf et 0.28 * Tinf. Cela nous permettra ensuite de trouver nos valeurs à l'aide de formules empiriques.</p>
+
+	<h3>Détermination des valeurs</h3>
+
+	<p>Après un essai à 100% nous trouvons une valeur de stabilité de 17,32 degrés en fixant la température extérieure à une constante. Cela sera notre T infini. Déterminons maintenant les valeurs de température à chercher pour trouver ensuite t40 et t28 :</p>
+
+	<img class="larger-img" src="img/T_infinity_equation.png">
+
+	<p>Voilà pour schématiser comment se répartissent les valeurs pour une courbe en S :</p>
+
+	<img src="img/diagram_method.png">
+
+	<p>Trouvons t40 et t28 en imprimant la valeur dans la console dès que la valeur de température est atteinte au centre :</p>
+
+	<img class="larger-img" src="img/t_values_equation.png">
+
+	<p>Finalement nous pouvons trouver les valeurs finales de la méthode de Broïda :</p>
+
+	<img class="larger-img" src="img/broida_result_equation.png">
+
+	<p>Une fois la méthode de Broïda réalisée, nous voyons bien que nous n'avons toujours pas nos inconnues à savoir Kc et S0. S0 sera égale à 0 car il s'agit d'un décalage propre au réglage, qui ne nous servira pas pour l'instant. En revanche, pour trouver Kc, nous allons devoir appliquer la formule de Ziegler-Nichols :</p>
+
+	<img src="img/Kc_P_equation.png">
+
+	<p>Maintenant que T0 et Kc sont trouvés nous pouvons réaliser notre code :</p>
+
+	<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">case</span><span style="color: #ed9d13">&#39;P&#39;</span><span style="color: #d0d0d0">:</span>
+	<span style="color: #d0d0d0">S0</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0</span> <span style="color: #999999; font-style: italic">//Pas d&#39;écart à la consigne</span>
+	<span style="color: #d0d0d0">Kc</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0.13</span> <span style="color: #999999; font-style: italic">//Déterminé par la méthode de Broida et Ziegler</span>
+
+<span style="color: #999999; font-style: italic">//Formule d&#39;un régulateur P (0 &lt; S &lt; 1)</span>
+	<span style="color: #d0d0d0">S</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">S0</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">Kc</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">(data.setPoint</span> <span style="color: #d0d0d0">-</span> <span style="color: #d0d0d0">objectSliceList[</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">])</span>
+
+	<span style="color: #6ab825; font-weight: bold">if</span><span style="color: #d0d0d0">(S</span> <span style="color: #d0d0d0">&lt;</span> <span style="color: #3677a9">0</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0</span> 
+	<span style="color: #d0d0d0">}</span> <span style="color: #6ab825; font-weight: bold">else</span> <span style="color: #6ab825; font-weight: bold">if</span><span style="color: #d0d0d0">(S</span> <span style="color: #d0d0d0">&gt;</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.maxPower</span>
+	<span style="color: #d0d0d0">}</span> <span style="color: #6ab825; font-weight: bold">else</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.maxPower</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">S</span>
+	<span style="color: #d0d0d0">}</span>
+	<span style="color: #6ab825; font-weight: bold">break</span>
+</pre></div>
+
+	<p>Après un essai nous pouvons observer que notre système est très stable mais qu'il admet un écart assez important. Voilà la représentation graphique de la courbe en S que nous obtenons :</p>
+
+	<img src="img/P_mode_graph.png">
+
+	<p>Cet écart s'appelle l'écart statique, et est propre au régulateur proportionnel. Pour éviter cet écart et avoir une régulation plus fiable nous pouvons choisir de le remplacer par un régulateur PI ou même un PID. Nous analyserons le régulateur PI dans la prochaine partie.</p>
+
+	<h2>Régulation PI</h2>
+
+	<p>Le régulateur PI sera très proche du régulateur P, si ce n'est qu'il comprend une partie intégrale qui va permettre de lisser l'écart statique. Plus le temps écoulé sera grand, plus l'intégrale sera précise et le système stable.</p>
+
+	<img class="larger-img" src="img/equation_nbr_6_white.png">
+
+	<p>Nouvelle équation veut aussi dire nouveaux paramètres à trouver. Nous cherchons donc Kc, S0 et Ti mais ne les avons pas. Ainsi, il suffit d'appliquer la même méthode que pour la régulation proportionnelle, à savoir la méthode de Ziegler-Nichols. S0 quant à lui sera égal à 0 comme dit précédement.</p>
+
+	<img src="img/Kc_Ti_PI_equation.png">
+
+	<p>Une fois les valeurs déterminées nous pouvons réaliser notre fonctionnement en code. A savoir que l'intégrale sera une simple somme des écarts au court du temps (de 0 à t). A noter que le résultat de l'intégrale peut être négatif ou positif suivant la valeur de notre température par rapport au point de consigne.</p>
+
+<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">case</span> <span style="color: #ed9d13">&#39;PI&#39;</span><span style="color: #d0d0d0">:</span>
+	<span style="color: #d0d0d0">S0</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0</span><span style="color: #999999; font-style: italic">//Pas d&#39;écart à la consigne</span>
+	<span style="color: #d0d0d0">Ti</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">425.46</span><span style="color: #999999; font-style: italic">//Ti et Kc par la méthode de Broida et Ziegler</span>
+	<span style="color: #d0d0d0">Kc</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0.117</span>
+	
+<span style="color: #999999; font-style: italic">//Formule du régulateur proportionnel intégral</span>
+	<span style="color: #d0d0d0">S</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">S0</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">Kc</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">((data.setPoint</span> <span style="color: #d0d0d0">-</span> <span style="color: #d0d0d0">objectSliceList[</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">])</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">data.offsetSum</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">Ti)</span>
+
+	<span style="color: #6ab825; font-weight: bold">if</span><span style="color: #d0d0d0">(S</span> <span style="color: #d0d0d0">&lt;</span> <span style="color: #3677a9">0</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0</span> 
+	<span style="color: #d0d0d0">}</span> <span style="color: #6ab825; font-weight: bold">else</span> <span style="color: #6ab825; font-weight: bold">if</span><span style="color: #d0d0d0">(S</span> <span style="color: #d0d0d0">&gt;</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.maxPower</span>
+	<span style="color: #d0d0d0">}</span> <span style="color: #6ab825; font-weight: bold">else</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.maxPower</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">S</span>
+	<span style="color: #d0d0d0">}</span>
+	<span style="color: #6ab825; font-weight: bold">break</span>
+</pre></div>
+
+	<p>Voilà la courbe en S donnée par cette méthode de régulation :</p>
+
+	<img src="img/PI_mode.png">
+
+	<p>Lorsque le temps écoulé est très grand, nous remarquons toujours un écart entre la consigne et la température du verre. Si la température extérieure est stable, nous ne remarquons par cet écart, ce qui nous ammène à conclure que ce léger écart est dû aux paramètres perturbateurs (exemple : la température extérieure variable). Pour corriger cet écart nous pouvons jouer sur les paramètres théoriques, ou ajouter de l'anticipation à l'aide d'une fonction dérivée.</p>
+
+	<h2>Régulation PID</h2>
+
+	<p>La régulation PID n'aurait que peu d'intérêt dans notre cas, car elle permettrait de relever la température à 3°C exactement au lieu de 2.9°C (testée dans mes essais). C'est un type de régulation très précis qui permet surtout l'anticipation. Evidement, comment rouler droit quand on ne regarde pas devant ?</p>
+
+	<p>Voilà la formule de base :</p>
+
+	<img class="larger-img" src="img/PID_equation.png">
+
+	<p>Dans notre cas, et dans le cas du génie climatique plus généralement, nous ne cherchons pas un niveau de précision si important. Etant donné qu'elle induit des conditions et des calculs en plus, j'ai décidé de ne pas la retenir dans le code. Toutefois, voici le code pour information :</p>
+
+	<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">case</span> <span style="color: #ed9d13">&#39;PID&#39;</span><span style="color: #d0d0d0">:</span>
+	<span style="color: #d0d0d0">S0</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0</span>
+	<span style="color: #d0d0d0">Ti</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">255.532</span>
+	<span style="color: #d0d0d0">Td</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">63.883</span>
+	<span style="color: #d0d0d0">Kc</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0.156</span>
+	
+	<span style="color: #d0d0d0">S</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">S0</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">Kc</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">((data.setPoint</span> <span style="color: #d0d0d0">-</span> <span style="color: #d0d0d0">objectSliceList[</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">])</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">data.offsetSum</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">Ti</span> <span style="color: #d0d0d0">+</span> <span style="color: #d0d0d0">Td</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">((data.setPoint</span> <span style="color: #d0d0d0">-</span> <span style="color: #d0d0d0">objectSliceList[</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">])</span> <span style="color: #d0d0d0">-</span> <span style="color: #d0d0d0">(data.setPoint</span> <span style="color: #d0d0d0">-</span> <span style="color: #d0d0d0">objectSliceList[</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">8</span><span style="color: #d0d0d0">][</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">].temperature[</span><span style="color: #3677a9">0</span><span style="color: #d0d0d0">]))</span> <span style="color: #d0d0d0">/</span> <span style="color: #d0d0d0">data.dt)</span>
+
+	<span style="color: #6ab825; font-weight: bold">if</span><span style="color: #d0d0d0">(S</span> <span style="color: #d0d0d0">&lt;</span> <span style="color: #3677a9">0</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0</span> 
+	<span style="color: #d0d0d0">}</span> <span style="color: #6ab825; font-weight: bold">else</span> <span style="color: #6ab825; font-weight: bold">if</span><span style="color: #d0d0d0">(S</span> <span style="color: #d0d0d0">&gt;</span> <span style="color: #3677a9">1</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.maxPower</span>
+	<span style="color: #d0d0d0">}</span> <span style="color: #6ab825; font-weight: bold">else</span> <span style="color: #d0d0d0">{</span>
+		<span style="color: #d0d0d0">data.power</span> <span style="color: #d0d0d0">=</span> <span style="color: #d0d0d0">data.maxPower</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">S</span>
+	<span style="color: #d0d0d0">}</span>
+	<span style="color: #6ab825; font-weight: bold">break</span>
+</pre></div>
+
+	<h1>Conclusion</h1>
+
+	<p>Pour finir, ce projet fut très enrichissant pour comprendre et mettre en pratique la régulation sur un objet et observer l'action des différents modes de régulation sur celui-ci. J'ai pu appréhender les réglages et le calcul des paramètres pour avoir un système le mieux réglé possible. Cela a aussi été l'occasion de mettre en place le terme de puissance dans les équations, et de travailler en 3 dimensions plutôt qu'en "1 à 2 dimensions" jusqu'alors, bien qu'en réalité nous étions toujours en 3 dimensions, car nous n'aurions pas pu définir de masse.</p>
+
+	<p>Nous observons qu'il n'y a pas de réglage parfait en régulation, mais qu'il est possible de s'en rapprocher par la connaissance du modèle, bien que les paramètres externes jouent également un grand rôle dans son comportement et remettent en question les valeurs théoriques.</p>
+
+	<p>Par ailleurs, le comportement de l'objet semble très réaliste aussi bien sur le maintien des états stables, que sa réaction lors des tests d'échellons unitaires. Cela est très rassurant sur la fiabilité du modèle.</p>
+	</article>
+</body>
+<script src="app.js"></script>
+</html>
