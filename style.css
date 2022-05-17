@@ -194,6 +194,11 @@ a {
 .matrix .object-row:nth-child(17) .object-column:nth-child(17) {
   border-bottom: solid white 2px;
 }
+
+.object-line {
+  width: 100%;
+}
+
 .math {
   text-align: center;
   font-size: var(--medium-font-size);
@@ -238,7 +243,7 @@ a {
 }
 
 .btns .btn {
-  font-size: 17px;
+  font-size: 15px;
   cursor: pointer;
   width: 100%;
   display: table-cell;
@@ -349,6 +354,14 @@ article .larger-img {
   width: 100%;
 }
 
+article .smaller-img {
+  width: 50%;
+}
+
+article .very-smaller-img {
+  width: 30%;
+}
+
 article p {
   text-align: justify;
 }
@@ -361,6 +374,11 @@ article .credit {
 
 /*========== CANVAS ==========*/
 
+.canvas-function {
+  display: block;
+  margin: auto;
+}
+
 article #legend-container p:nth-child(3) .square-shape {
   background-color: rgb(115, 185, 244);
 }
@@ -371,6 +389,19 @@ article #legend-container p:nth-child(3) .square-shape {
 
 article #legend-container p:nth-child(4) .square-shape {
   background-color: #fc3f85;
+}
+
+article table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+article table, article th, article td {
+  border: 1px solid white;
+}
+
+article table td {
+  text-align: center;
 }
 
 @media screen and (max-width: 1200px) {

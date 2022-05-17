@@ -39,7 +39,12 @@
 			      </label>
 			      <label>
 			        <input name='button-group' class="regulation-pi-mode" type='radio'>
-			          <span class='btn last'>PI</span>
+			          <span class='btn'>PI</span>
+			        </input>
+			      </label>
+			      <label>
+			        <input name='button-group' class="regulation-pid-mode" type='radio'>
+			          <span class='btn last'>PID</span>
 			        </input>
 			      </label>
 			    </div>
@@ -97,6 +102,8 @@
 			<p><span class="square-shape"></span>Cuivre</p>
 		</div>
 
+		<h2>Sujet : Quel est le procédé de régulation le plus efficace pour réaliser des économies d'énergies sur un système ?</h2>	
+
 		<h1>Introduction</h1>
 		<p>Pour mieux comprendre ce projet, il est nécessaire de plonger dans le vaste univers de l’astrophotographie, et des techniques utilisées pour capturer les astres. Prendre des photos de l’espace de bonne facture requiert de nombreuses connaissances dans le monde numérique, de la photographie, de la physique et de l’astronomie. Mais alors, comment ça marche ?<p>
 
@@ -138,14 +145,14 @@
 
 		<h2>Eviter la buée sur la lunette :</h2>
 
-		<p>Les photos étant prise la nuit, l’air ambiant est souvent saturé avec une forte hygrométrie relative et une température basse. Ainsi, de la condensation va se former sur le matériel placé à l’extérieur, et également sur les verres de l’objectif ou de la lunette. Or, comme nous souhaitons prendre des photos les plus détaillées possibles, avoir un voile de buée devant un élément qui nous permet de capturer l’image est évidemment une chose à proscrire. Pour éviter cela nous installons alors une résistance chauffante autour de l’objectif pour garder la température du matériel au dessus du point de rosée et éviter la condensation sur celui-ci. C’est précisément ce que nous étudierons dans ce projet.</p>
+		<p>Les photos étant prises la nuit, l’air ambiant est souvent saturé avec une forte hygrométrie relative et une température basse. Ainsi, de la condensation va se former sur le matériel placé à l’extérieur, et également sur les verres de l’objectif ou de la lunette. Or, comme nous souhaitons prendre des photos les plus détaillées possibles, avoir un voile de buée devant un élément qui nous permet de capturer l’image est évidemment une chose à proscrire. Pour éviter cela nous installons alors une résistance chauffante autour de l’objectif pour garder la température du matériel au dessus du point de rosée et éviter la condensation sur celui-ci. C’est précisément ce que nous étudierons dans ce projet.</p>
 
 		<img src="img/dew_heater.png">
 		<p class="credit">Dew heater, puissance 10W, température max : 60°C</p>
 
 		<p>Pour réaliser notre régulation nous prendrons des hypothèses sur les températures et l’hygrométrie de notre point extérieur. Après avoir réalisé des recherches météos, nous prendrons un point d’air extérieur classique de : 6 degrés Celsius ; 80% d’humidité.</p>
 
-		<p>Ainsi notre <strong>point de rosé</strong>, selon le diagramme de l’air humide en python dans les fichiers du projet est de <strong>3°C</strong></p>
+		<p>Ainsi notre <strong>point de rosé</strong>, selon le diagramme de l’air humide en python dans les fichiers du projet est de <strong>3°C</strong>. Cela sera donc notre consigne. En réalité la température de rosée de l'air évolue et sera prise en compte ultérieurement dans le rayonnement de l'athmosphère.</p>
 
 		<p>Petite précision : ces résistances ne sont jamais régulées en puissance pour réaliser des économies d’énergie. Mais pour complexifier l’étude nous réaliserons une régulation de puissance suivant les méthodes vu en cours de régulation.</p>
 
@@ -160,7 +167,75 @@
 		<img src="img/lunette-modele.jpg">
 		<p class="credit">Rendu 3D sous blender</p>
 
-		<p>Comme nous pouvons le voir ci-dessus, le modèle physique choisi est beaucoup plus simple. Au centre nous avons du verre, dont le point central sera notre point de mesure. A noter que le diamètre de l'objectif est de 0.005 * 11 = 5.5cm. Le verre est entouré d'une résistance en cuivre qui se chargera de le maintenir à température pour éviter la condensation. Puis, nous considérerons le tissus isolant placé autour du cuivre : au dessus, en dessous et sur les côtés. Notre modèle sera donc en 3D et prendra en compte l'air autour de lui qui évoluera de façon sinusoïdale (jour type d'hiver).</p>
+		<p>Comme nous pouvons le voir ci-dessus, le modèle physique choisi est beaucoup plus simple. Au centre nous avons du verre, dont le point central sera notre point de mesure. A noter que le diamètre de l'objectif est de 0.005 * 11 = 5.5cm. Le verre est entouré d'une résistance en cuivre qui se chargera de le maintenir à température pour éviter la condensation. Puis, nous considérerons le tissus isolant placé autour du cuivre : au dessus, en dessous et sur les côtés. Notre modèle sera donc en 3D et prendra en compte l'air autour de lui qui évoluera de façon sinusoïdale en comprenant le rayonnement de la voûte céleste (jour type d'hiver).</p>
+
+		<p>Nous aurons donc 3 matrices à considérer dans notre problème (voir photo précédente) :</p>
+
+		<table>
+		<tbody>
+			<tr>
+				<td>Epaisseur (m)</td>
+				<td>0</td>
+				<td>0.005</td>
+				<td>0.01</td>
+				<td>0.015</td>
+				<td>0.02</td>
+			</tr>
+			<tr>
+				<td>Composition</td>
+				<td>Air</td>
+				<td>Isolant + Air</td>
+				<td>Verre + Cuivre <br> + Isolant + Air</td>
+				<td>Isolant + Air</td>
+				<td>Air</td>
+			</tr>
+			<tr>
+				<td>Stockage</td>
+				<td>Scalaire</td>
+				<td>Matrice 1</td>
+				<td>Matrice 2</td>
+				<td>Matrice 3</td>
+				<td>Scalaire</td>
+			</tr>
+		</tbody>
+		</table>
+
+		<p>* Dans le logiciel en haut de page, nous affichons la matrice 2 avec les valeurs de température à T+.</p>
+
+		<h1>Recherche de symétrie</h1>
+
+		<p>Comme il s'agit d'un cylindre de rayon constant, nous pourrions faire une matrice en 2D pour faciliter les calculs. Cela permettrait de gagner en performances.</p>
+
+		<p>Notre modèle pourra donc se mettre sous forme de matrice comme cela :</p>
+
+		<div id="object-slice object-line">
+			<table>
+				<tbody>
+					<tr class="object-row">
+						<td class="object-column" style="background: rgb(138, 203, 122);">0.7</td>
+						<td class="object-column" style="background: rgb(152, 250, 127);">0.7</td>
+						<td class="object-column" style="background: rgb(152, 250, 127);">0.7</td>
+						<td class="object-column" style="background: rgb(152, 250, 127);">0.7</td>
+						<td class="object-column" style="background: rgb(152, 250, 127);">0.7</td>
+						<td class="object-column" style="background: rgb(152, 250, 127);">0.7</td>
+						<td class="object-column" style="background: rgb(84, 232, 170);">0.7</td>
+						<td class="object-column" style="background: rgb(56, 132, 197);">0.7</td>
+						<td class="object-column" style="background: rgb(115, 185, 244);">0.7</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div id="legend-container">
+			<p>Légende :</p>
+			<p><span class="square-shape" style="background: rgb(115, 185, 244);"></span>Air</p>
+			<p><span class="square-shape" style="background: rgb(56, 132, 197);"></span>Isolant</p>
+			<p><span class="square-shape" style="background: rgb(84, 232, 170);"></span>Cuivre</p>
+			<p><span class="square-shape" style="background: rgb(152, 250, 127);"></span>Verre</p>
+			<p><span class="square-shape" style="background: rgb(138, 203, 122);"></span>Mesure</p>
+		</div>
+
+		<p><strong>Nous choisirons cependant de réaliser des matrices complètes qui nous permettront de nous initier à la 3D.</strong></p>
 
 		<h1>Méthode de calcul</h1>
 		<h2>Recherche des équations</h2>
@@ -193,6 +268,28 @@
 		<img class="larger-img" src="img/equation_nbr_4.png">
 		
 		<p>Attention : Il faudra veiller à ce que le terme devant le T ne soit jamais inférieur à 0 sinon notre suite divergera.</p>
+
+		<h1>Rayonnement de la voûte céleste</h1>
+
+		<p>Pour ajouter un peu de compléxité nous ajouterons le rayonnement de la voûte céleste dans nos calculs. En effet, elle a un effet important sur le matériel stocké dehors en pleine nuit, et l'ammène à être plus froid que la température extérieure réelle. Pour cela nous utiliserons la formule suivante pour l'émissivité du ciel :</p>
+
+		<img src="img/esky_equation.png">
+
+		<p>Et cette formule pour la température du ciel :</p>
+
+		<img src="img/Tsky_equation.png">
+
+		<p>Nous pouvons observer que ces formules dépendent d'une valeur que nous n'avons pas : la température de rosée. Cette température est amenée à grandement varier à cause des vents, de l'évaporation etc. Nous analyserons donc les fichiers météos du site de Grenoble Saint-Geoirs (38) en période hiver pour modéliser l'évolution de la température de rosée :</p>
+
+		<img class="larger-img" src="img/releve_meteo.png">
+
+		<p>Nous pouvons voir que sur la journée + nuit du 30 janvier 2022 la température de rosée évolue de manière sinusoidale. Nous approximerons donc l'évolution par un sinus.</p>
+
+		<p>Il s'agit maintenant d'incorporer nos formules dans les résultats précédents. Pour cela nous utiliserons une température extérieure équivalente, évidement plus basse que la température normale.</p>
+
+		<img class="larger-img" src="img/text_equation.png">
+
+		Les éléments des matrices contenant Tair seront donc corrigés à l'aide de cette formule.
 
 		<h1>Traduction du code</h1>
 		<h2>L'objet data</h2>
@@ -281,6 +378,12 @@
 
 		<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #d0d0d0">item.temperature[</span><span style="color: #3677a9">1</span><span style="color: #d0d0d0">]</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">5</span> <span style="color: #d0d0d0">*</span> <span style="color: #24909d">Math</span><span style="color: #d0d0d0">.sin((</span><span style="color: #3677a9">1</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">86400</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.time</span> <span style="color: #d0d0d0">*</span> <span style="color: #3677a9">2</span> <span style="color: #d0d0d0">*</span> <span style="color: #24909d">Math</span><span style="color: #d0d0d0">.PI</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">3</span><span style="color: #d0d0d0">)</span>
 </pre></div>
+
+		<h2>Evolution de la température de rosée extérieure</h2>
+		<p>Notre température de rosée évoluera en fonction d’un sinus réalisé pour l‘occasion :</p>
+
+		<!-- HTML generated using hilite.me --><div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #d0d0d0">tDew</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">4</span> <span style="color: #d0d0d0">*</span> <span style="color: #24909d">Math</span><span style="color: #d0d0d0">.sin(</span><span style="color: #3677a9">2</span> <span style="color: #d0d0d0">*</span> <span style="color: #24909d">Math</span><span style="color: #d0d0d0">.PI</span> <span style="color: #d0d0d0">*</span> <span style="color: #d0d0d0">data.time</span> <span style="color: #d0d0d0">/</span> <span style="color: #3677a9">86400</span> <span style="color: #d0d0d0">+</span> <span style="color: #3677a9">3</span><span style="color: #d0d0d0">)</span> <span style="color: #d0d0d0">-</span> <span style="color: #3677a9">1</span></pre></div>
+
 	
 		<h2>Mise en equation du modèle</h2>
 		<p>Maintenant que nous avons défini comment vont fonctionner nos données, et comment les fonctions sont appelées, nous nous intéressons désormais à la mise en équation de notre modèle. Pour cela, comme nous avons défini préalablement nos équations, nous avons plus qu’à les appliquer en sachant que le cuivre devra intégrer la puissance délivrée, et l’air n’aura pas de température définie autrement que par un sinus.</p>
@@ -340,7 +443,7 @@
 	<p class="math">Stabilité =</p>
 	<div class="matrix stabilityValue"></div>
 
-	<p>Dans le cas présent, nous pouvons voir que nos valeurs sont bonnes et que notre système sera stable. C'est le cas pour une certaine valeur de dt, qui semble assez faible et ne nous permet pas d'accélerer le temps à l'infini. Maintenant que nous avons vérifié toutes nos matrices, et que nos températures T et T+1 fonctionnent à l'aide du terme de puissance apportée, nous allons passer à la régulation de la puissance.</p>
+	<p>Dans le cas présent, nous pouvons voir que nos valeurs sont bonnes et que notre système sera stable. C'est le cas pour une certaine valeur de dt, qui semble assez faible et ne nous permet pas d'accélerer le temps à l'infini. Maintenant que nous avons vérifié toutes nos matrices, et que nos températures T et T+1 fonctionnent à l'aide du terme de puissance apporté, nous allons passer à la régulation de la puissance.</p>
 
 	<h1>Régulation</h1>
 
@@ -488,7 +591,7 @@
 
 	<img src="img/PI_mode.png">
 
-	<p>Lorsque le temps écoulé est très grand, nous remarquons toujours un écart entre la consigne et la température du verre. Si la température extérieure est stable, nous ne remarquons par cet écart, ce qui nous ammène à conclure que ce léger écart est dû aux paramètres perturbateurs (exemple : la température extérieure variable). Pour corriger cet écart nous pouvons jouer sur les paramètres théoriques, ou ajouter de l'anticipation à l'aide d'une fonction dérivée.</p>
+	<p>Lorsque le temps écoulé est très grand, nous remarquons toujours un écart entre la consigne et la température du verre. Si la température extérieure est stable, nous ne remarquons par cet écart, ce qui nous ammène à conclure que ce léger écart est dû aux paramètres perturbateurs (exemple : la température extérieure variable). Pour corriger cet écart nous pouvons jouer sur les paramètres théoriques, ou ajouter de l'anticipation à l'aide d'une fonction dérivée. Ce problème vient surtour de la méthode de réslution explicite.</p>
 
 	<h2>Régulation PID</h2>
 
@@ -498,7 +601,7 @@
 
 	<img class="larger-img" src="img/PID_equation.png">
 
-	<p>Dans notre cas, et dans le cas du génie climatique plus généralement, nous ne cherchons pas un niveau de précision si important. Etant donné qu'elle induit des conditions et des calculs en plus, j'ai décidé de ne pas la retenir dans le code. Toutefois, voici le code pour information :</p>
+	<p>Dans notre cas, et dans le cas du génie climatique plus généralement, nous ne cherchons pas un niveau de précision et un rapidité de convergence si importante. Voilà le code pour la régulation PID :</p>
 
 	<div style="background: #202020; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #6ab825; font-weight: bold">case</span> <span style="color: #ed9d13">&#39;PID&#39;</span><span style="color: #d0d0d0">:</span>
 	<span style="color: #d0d0d0">S0</span> <span style="color: #d0d0d0">=</span> <span style="color: #3677a9">0</span>
@@ -517,6 +620,164 @@
 	<span style="color: #d0d0d0">}</span>
 	<span style="color: #6ab825; font-weight: bold">break</span>
 </pre></div>
+
+	<p>La dérivée sera réalisée à l'aide d'un tableau de 2 valeurs (T-1 et T) par rapport au temps.</p>
+
+	<p>Voici la courbe que nous obtenons :</p>
+
+	<img src="img/PI_mode.png">
+
+	<h1>Ordre du système</h1>
+
+	<p>En utilisant la méthode de Broida par résolution graphique, nous prenons pour hypothése que le système est du premier ordre. En réalité, notre point de mesure étant au centre du verre, nous sommes face à un système du second ordre. En effet, nous avons la masse de cuivre à chauffer, puis le verre pour jouer sur notre température mesurée.</p>
+
+	<p>Ordre 1 :</p>
+
+	<img class="smaller-img" src="img/ordre1.png">
+
+	<p>Ordre 2 :</p>
+
+	<img class="smaller-img" src="img/ordre2.png">
+
+	<p>Nous voyons bien que notre système est du deuxième ordre. Cependant, nous prendrons pour hypothèse que nous sommes en premier ordre, <strong>en prenant en compte un temps de retard dans notre calcul.</strong></p> 
+
+	<h1>Rapidité de convergence</h1>
+
+	<p>La rapidité de convergence est un sujet important pour certaines applications. Pas forcément pour la notre, mais il peut être interréssant de l'étudier et d'en tirer des conclusions pour le génie climatique. Pour réaliser nos études nous réglerons les problèmes de l'écart statique en agissant sur S0.</p>
+
+	<h2>Convergence pour T = 20 minutes</h2>
+
+	<h3>Mode 0/1</h3>
+
+	<img class="larger-img" src="img/0_1_fonction.png">
+
+	<h3>Mode P</h3>
+
+	<img class="larger-img" src="img/P_fonction.png">
+
+	<h3>Mode PI</h3>
+
+	<img class="larger-img" src="img/PI_fonction.png">
+
+	<h3>Mode PID</h3>
+
+	<img class="larger-img" src="img/PID_fonction.png">
+
+	<h2>Comparaison des différentes méthodes</h2>
+
+	<p>Finalement, nous pouvons trouver la méthode à appliquer suivant nos besoins (précision, rapidité de convergence) :</p>
+
+	<table>
+		<tbody>
+			<tr>
+				<td>Critère</td>
+				<td>0/1</td>
+				<td>P</td>
+				<td>PI</td>
+				<td>PID</td>
+			</tr>
+			<tr>
+				<td>Rapidité de convergence</td>
+				<td>0</td>
+				<td>1</td>
+				<td>0.5</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>Précision</td>
+				<td>0</td>
+				<td>0</td>
+				<td>1</td>
+				<td>1</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>Dans notre cas, le mode P conviendra parfaitement car nous n'avons pas besoin d'une précision incroyable. De plus, la réalisation des intégrales et des dérivées demande plus de ressource et de mémoire.</p>
+
+	<h1>Economies d'énergies</h1>
+
+	<p>Pour répondre à notre sujet, la question qui se pose est de savoir quel type de régulation est le plus économique. Pour cela nous devons réaliser des relevés de consommation au cours du temps qui nous permettrons de séléctionner de façon pratique la plus économique. Il semble toutefois évident que la moins consommatrice sera la régulation P, qui a une puissance plus petite  en moyenne à cause de son écart statique mais qui ne respecte pas la consigne. Nous réglerons ce problème en jouant sur le terme de source pour que la consigne soit respectée. Voici le tableau des relevés :</p>	
+
+	<p>Temps d'étude : 3600 s</p>
+
+	<table>
+		<thead>
+			<tr>
+				<th>100%</th>
+				<th>0/1</th>
+				<th>P</th>
+				<th>PI</th>
+				<th>PID</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>7 Wh</td>
+				<td>3.57 Wh</td>
+				<td>3.49 Wh</td>
+				<td>3.27 Wh</td>
+				<td>3.41 Wh</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>Pour une nuit de fonctionnement de 6 heures :</p>
+
+	<table>
+		<thead>
+			<tr>
+				<th>100%</th>
+				<th>0/1</th>
+				<th>P</th>
+				<th>PI</th>
+				<th>PID</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>56 Wh</td>
+				<td>27.18 Wh</td>
+				<td>29.58 Wh</td>
+				<td>29.36 Wh</td>
+				<td>29.5 Wh</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>Nous pouvons voir que le mode qui consomme le moins est le mode 0/1. Il n'arrive pas à respecter la consigne et agit de façon anarchique entre 0 et 3.5. C'est donc normal qu'il consomme moins.</p>
+
+	<h2>Conclusion sur le mode le plus économique</h2>
+
+	<p>En réalité, le mode le plus économique est le mode PI qui met plus de temps à converger, mais nous voyons que les valeurs sont toutes très proches. Nous pouvons en déduire que trouver le mode de fonctionnement le plus économique n'a que peu d'intéret dans la mesure où tous les modes P, PI et PID (à condition qu'ils soient bien réglés) sont capable de respecter la consigne. Une fois stabilisé ils consommerons tous la même chose.</p>
+
+	<p><strong>Mode 100% :</strong> Ce mode aura de l'intérêt pour des systèmes peu consommateur. Il permettra d'éviter d'investir dans des sondes et des regulateurs. Il pourra aussi servir dans des systèmes où, lorsque nous sommes à Pmax, la valeur de consigne est proche de la valeur mesurée.</p>
+
+	<p><strong>Mode 0/1 :</strong> Le mode 0/1 n'a aucun intérêt. Il nécessite 1 régulateur et 1 sonde pour une précision ridicule. Dans ce cas, il vaut mieux choisir un régulateur proportionnel.</p>
+
+	<p><strong>Mode P, PI, PID :</strong> Dans le cas de systèmes plus consommateur, il devient interessant d'investir dans du matériel de régulation pour réaliser des économies (50% environ). Les modes P, PI, PID sont capable de respecter la consigne. Le choix de ces 3 modes dépendra des besoins en rapidité de convergence et en précision.</p>
+
+	<h1>Quelle batterie choisir pour une nuit de photo ?</h1>
+
+	<p>Nous choisirons désormais notre batterie pour une nuit de 6 heures de prise de photo. Pour cela nous étudierons le mode de fonctionnement 100% et le mode PID. Le reste des modes ayant sensiblement les mêmes valeurs.</p>
+
+	<p>Nous choisirons une batterie portable avec une tension de 5V, ce qui est le standard sur le marché.</p>
+
+	<h2>Mode 100%</h2>
+
+	<img class="larger-img" src="img/batterie_100.png">
+
+	<h2>Mode PID</h2>
+
+	<img class="larger-img" src="img/batterie_PID.png">
+
+	<h2>Choix du produit</h2>
+
+	<p>Nous choisirons donc ce produit qui possède une capacité de 26800 mAh :</p>
+
+	<img class="very-smaller-img" src="img/batterie_photo.jpg">
+
+	<p>Nous voyons que la capacité de la batterie est largement suffisante pour les 2 modes. <strong>Nous pouvons en conclure que la régulation des dew-heaters n'a que peu de sens.</strong></p>
 
 	<h1>Conclusion</h1>
 

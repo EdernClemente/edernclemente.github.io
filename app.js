@@ -2,9 +2,9 @@
 let data = {
 		initTemp: (5 * Math.sin(3)).toFixed(1),
 		time: 0,
-		dt: 0.1054, //Max 0.1054
+		dt: 0.10540006, //Max 0.10540006
 		dx: 0.005, //dx = dy = dz of a cube
-		lambdaEqExt: 0.005 * 15 / 2, //dx * h air / 2
+		lambdaEqExt: 0.005 * 15 / 2, //dx * hair / 2
 		volume: Math.pow(0.005, 3),
 		computing: false,
 		computeTime: 2, //Gap between loops
@@ -14,30 +14,36 @@ let data = {
 		setPoint: 3,
 		consumption: 0,
 		temperatureList: {centerTemperature: [], copperTemperature: []},
-		offsetSum: 0
+		offsetSum: 0,
+		derivative: [0, 0]
 	},
 	A = {name: 'air', color: '#73b9f4', temperature: data.initTemp, cp: 1004, lambda: data.lambdaEqExt, rho: 1.3},
 	C = {name: 'copper', color: '#54e8aa', temperature: data.initTemp, cp: 380, lambda: 401, rho: 8960},
 	G = {name: 'glass', color: '#98fa7f', temperature: data.initTemp, cp: 720, lambda: 1, rho: 2530},
 	I = {name: 'insulation', color: '#3884c5', temperature: data.initTemp, cp: 1020, lambda: 0.6, rho: 400},
 	objectSliceList =	[[[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A]],
-				 [[A],[A],[A],[A],[A],[A],[I],[I],[I],[I],[I],[A],[A],[A],[A],[A],[A]],
-		 		 [[A],[A],[A],[A],[I],[I],[C],[C],[C],[C],[C],[I],[I],[A],[A],[A],[A]],
-				 [[A],[A],[A],[I],[C],[C],[G],[G],[G],[G],[G],[C],[C],[I],[A],[A],[A]],
-				 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
-				 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
-				 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
-				 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
-				 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
-				 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
-				 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
-				 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
-				 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
-				 [[A],[A],[A],[I],[C],[C],[G],[G],[G],[G],[G],[C],[C],[I],[A],[A],[A]],
-				 [[A],[A],[A],[A],[I],[I],[C],[C],[C],[C],[C],[I],[I],[A],[A],[A],[A]],
-				 [[A],[A],[A],[A],[A],[A],[I],[I],[I],[I],[I],[A],[A],[A],[A],[A],[A]],
-				 [[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A]]
-				]
+						 [[A],[A],[A],[A],[A],[A],[I],[I],[I],[I],[I],[A],[A],[A],[A],[A],[A]],
+						 [[A],[A],[A],[A],[I],[I],[C],[C],[C],[C],[C],[I],[I],[A],[A],[A],[A]],
+						 [[A],[A],[A],[I],[C],[C],[G],[G],[G],[G],[G],[C],[C],[I],[A],[A],[A]],
+						 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
+						 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
+						 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
+						 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
+						 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
+						 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
+						 [[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A]],
+						 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
+						 [[A],[A],[I],[C],[G],[G],[G],[G],[G],[G],[G],[G],[G],[C],[I],[A],[A]],
+						 [[A],[A],[A],[I],[C],[C],[G],[G],[G],[G],[G],[C],[C],[I],[A],[A],[A]],
+						 [[A],[A],[A],[A],[I],[I],[C],[C],[C],[C],[C],[I],[I],[A],[A],[A],[A]],
+						 [[A],[A],[A],[A],[A],[A],[I],[I],[I],[I],[I],[A],[A],[A],[A],[A],[A]],
+						 [[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A],[A]]
+						]
+
+//Le sinus pour la variation de la température de rosée en fonction du temps
+//4 * Math.sin(2 * Math.PI * data.time / 86400 + 3) - 1
+//Après une longue étude des fichiers météos (Grenoble St-Geoirs - 31 Janvier 2022) on remarque que la température de rosée suit la température extérieure, avec un ecart plus faible sur les températures basses, et plus grand sur les températures élevées.
+//Par ailleurs l'hiver, la rosée est absorbée rapidement dans l'air dès que le soleil se lève, et se dépose assez tôt dans la soirée
 
 /*========== VIEWS ==========*/
 
@@ -224,6 +230,22 @@ function updatePower(mode) {
 				data.power = data.maxPower * S
 			}
 			break
+		case 'PID':
+			S0 = 0
+			Ti = 255.532
+			Td = 63.883
+			Kc = 0.156
+			
+			S = S0 + Kc * ((data.setPoint - objectSliceList[8][8][1].temperature[1]) + data.offsetSum / Ti + Td * ((data.setPoint - data.derivative[1]) - (data.setPoint - data.derivative[0])) / data.dt)
+
+			if(S < 0) {
+				data.power = 0 
+			} else if(S > 1) {
+				data.power = data.maxPower
+			} else {
+				data.power = data.maxPower * S
+			}
+			break
 	}
 }
 
@@ -246,10 +268,10 @@ function setFoValues() {
 					elementValues.foAboveAndBelow 	= 0
 					break;
 				default:
-					elementValues.foNorth 		= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row - 1][column][0].lambda))
-					elementValues.foSouth 		= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row + 1][column][0].lambda))
-					elementValues.foWest 		= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row][column - 1][0].lambda))
-					elementValues.foEast 		= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row][column + 1][0].lambda))		
+					elementValues.foNorth 			= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row - 1][column][0].lambda))
+					elementValues.foSouth 			= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row + 1][column][0].lambda))
+					elementValues.foWest 			= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row][column - 1][0].lambda))
+					elementValues.foEast 			= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / objectSliceList[row][column + 1][0].lambda))		
 					elementValues.foAboveAndBelow 	= data.dt / (data.dx * data.dx * elementProperties.rho * elementProperties.cp * (1 / 2 / elementProperties.lambda + 1 / 2 / A.lambda))
 			}
 
@@ -260,7 +282,12 @@ function setFoValues() {
 	}
 }
 
+let airTemperature, eSky, TSky
 function updateTemperatureValues() {
+	//Relative air temperature (sky sphere radiations)
+	eSky = 0.77 + 0.0038 * (4 * Math.sin(2 * Math.PI * data.time / 86400 + 3) - 1)
+	TSky = Math.pow(eSky * Math.pow(5 * Math.sin(data.time * 2 * Math.PI / 86400 + 3) + 273, 4), 0.25)
+
 	for (var row = 0; row <= 16; row++) {
 		for (var column = 0; column <= 16; column++) {
 
@@ -269,13 +296,16 @@ function updateTemperatureValues() {
 
 			switch(elementProperties.name) {
 				case 'air':
-					elementValues.temperature[1] = 5 * Math.sin((1 / 86400) * data.time * 2 * Math.PI + 3)
-					break;
+					elementValues.temperature[1] = 5 * Math.sin(data.time * 2 * Math.PI / 86400 + 3)
+					break
 				case 'copper':
 					elementValues.temperature[1] = elementValues.stabilityValue * elementValues.temperature[0] + elementValues.foNorth * objectSliceList[row - 1][column][1].temperature[0] + elementValues.foSouth * objectSliceList[row + 1][column][1].temperature[0] + elementValues.foWest * objectSliceList[row][column - 1][1].temperature[0] + elementValues.foEast * objectSliceList[row][column + 1][1].temperature[0] + 2 * elementValues.foAboveAndBelow * objectSliceList[1][6][1].temperature[0] + data.power * data.dt / (elementProperties.rho * elementProperties.cp * data.volume)
-					break;
+					break
 				default:
-					elementValues.temperature[1] = elementValues.stabilityValue * elementValues.temperature[0] + elementValues.foNorth * objectSliceList[row - 1][column][1].temperature[0] + elementValues.foSouth * objectSliceList[row + 1][column][1].temperature[0] + elementValues.foWest * objectSliceList[row][column - 1][1].temperature[0] + elementValues.foEast * objectSliceList[row][column + 1][1].temperature[0] + 2 * elementValues.foAboveAndBelow * objectSliceList[0][0][1].temperature[0]
+					airTemperature = (5 * Math.sin(data.time * 2 * Math.PI / 86400 + 3) + 273) + ((4 * 5.67 * Math.pow(10, -8) * 0.8 * Math.pow((TSky + (parseFloat(elementValues.temperature[0]) + 273)) / 2, 3) / 15)) * (TSky - (parseFloat(elementValues.temperature[0]) + 273))
+					airTemperature = airTemperature - 273
+					
+					elementValues.temperature[1] = elementValues.stabilityValue * elementValues.temperature[0] + elementValues.foNorth * objectSliceList[row - 1][column][1].temperature[0] + elementValues.foSouth * objectSliceList[row + 1][column][1].temperature[0] + elementValues.foWest * objectSliceList[row][column - 1][1].temperature[0] + elementValues.foEast * objectSliceList[row][column + 1][1].temperature[0] + 2 * elementValues.foAboveAndBelow * airTemperature
 			}
 
 			elementValues.temperature[0] = elementValues.temperature[1]
@@ -310,14 +340,23 @@ function updateOffsetSum() {
 	data.offsetSum = data.offsetSum + (data.setPoint - objectSliceList[8][8][1].temperature[1]) * data.dt
 }
 
+function updateDerivative() {
+	data.derivative.push(objectSliceList[8][8][1].temperature[1])
+
+	if(data.derivative.length > 2) {
+		data.derivative.shift()
+	}
+}
+
 function updateHandler() {
 	if(data.computing == false) { return }
 
-	updatePower(data.powerMode)
 	updateTemperatureValues()
 	updateTime()
 	updateEnergy()
 	updateOffsetSum()
+	updateDerivative()
+	updatePower(data.powerMode)
 
 	updateTimeView(data.time)
 	updatePowerView(data.power)
@@ -360,6 +399,10 @@ document.querySelector('.regulation-pi-mode').addEventListener('click', () => {
 	data.powerMode = 'PI'
 })
 
+document.querySelector('.regulation-pid-mode').addEventListener('click', () => {
+	data.powerMode = 'PID'
+})
+
 setInterval(updateHandler, data.computeTime)
 setInterval(updateGraphHandler, 70)
 
@@ -370,6 +413,3 @@ updateTemperatureValues()
 updateCanvasView()
 
 document.querySelectorAll('.matrix').forEach(matrix => setMatrixView(matrix))
-
-
-
