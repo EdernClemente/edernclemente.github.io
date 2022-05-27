@@ -823,7 +823,7 @@
       doc.text('N° TVA : FR 89 542 097 944 – Code APE : 2521Z – Code EORI (Site St Thégonnec) : FR54209794400822', marginLeft, 285)
       doc.text('IBAN : FR76 3000 3040 2500 0203 9568 468 – BIC : SOGEFRPP', marginLeft, 290)
 
-      doc.save('a4.pdf')
+      doc.save(data.projectName +'_Bosch_Pac_Select.pdf')
 
     },
     fromNameToReference(name) {
