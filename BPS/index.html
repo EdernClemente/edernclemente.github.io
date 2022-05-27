@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Heat pump selector</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="css/index-style.css">
+
+    <!-- Js PDF -->
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable"></script>
+  </head>
+  <body>
+    <header>
+        <div>
+            <img src="https://raw.githubusercontent.com/EdernClemente/edernclemente.github.io/main/img/BAD60DB3-3BE0-425C-987C-0D4E859D9CB5.png">
+            <h1>Heat pump selector</h1>
+        </div>
+        <svg id="header-toggle" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform:;-ms-filter:;"><path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"></path></svg>
+    </header>
+
+    <nav id="navbar">
+        <div class="nav__container">
+            <div>
+                <div class="nav__logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" style="transform:;-ms-filter:;"><path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"></path></svg>
+                </div>
+
+                <div class="nav__list">
+                    <div class="nav__items">
+                        <h3>Menu</h3>
+
+                        <a href="#informations" class="informations-link nav__link">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" style="transform:;-ms-filter:"><path d="M15 11H22V13H15zM16 15H22V17H16zM14 7H22V9H14zM4 19h8 1 1v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h1H4zM8 12c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z"></path></svg>
+                            <span>Informations</span>
+                        </a>
+
+                        <a href="#quote" class="quote-link nav__link">
+                            <svg class="icon locked" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" style="transform:;-ms-filter:"><path transform="rotate(45.001 19.345 4.656)" d="M17.223 3.039H21.466V6.273H17.223z"></path><path d="M8 16L11 16 18.287 8.713 15.287 5.713 8 13z"></path><path d="M19,19H8.158c-0.026,0-0.053,0.01-0.079,0.01c-0.033,0-0.066-0.009-0.1-0.01H5V5h6.847l2-2H5C3.897,3,3,3.896,3,5v14 c0,1.104,0.897,2,2,2h14c1.104,0,2-0.896,2-2v-8.668l-2,2V19z"></path></svg>
+                            <span class="locked">Devis</span>
+                            <svg class="lock locked" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M20 12c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5S7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"></path></svg>
+                        </a>
+
+                        <div class="nav__dropdown">
+                            <a class="nav__link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" style="transform:;-ms-filter:"><path d="M12 6C9.831 6 8.066 7.765 8.066 9.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626-.255.207-.496.404-.691.599C11.029 13.156 11 14.215 11 14.333V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182C15.934 7.765 14.169 6 12 6zM11 16H13V18H11z"></path><path d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10s10-4.486,10-10S17.514,2,12,2z M12,20c-4.411,0-8-3.589-8-8s3.589-8,8-8 s8,3.589,8,8S16.411,20,12,20z"></path></svg>
+                                <span>Aide</span>
+                                <svg class='nav__dropdown-icon' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:rgba(0, 0, 0, 1);transform:;-ms-filter:"><path d="M16.293 9.293L12 13.586 7.707 9.293 6.293 10.707 12 16.414 17.707 10.707z"></path></svg>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="#documentation" class="documentation-link nav__link">Documentation</a>
+                                    <a href="#contact" class="contact-link nav__link">Contact</a>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div id='informations-page' class="form">
+            <ul>
+                <li>
+                    <h2>Informations projet</h2>
+
+                    <label>Nom du projet</label>
+                    <input id="projectName" type="text" name="" placeholder="Saisir un nom" required="">
+                </li>
+                <li>
+                    <h2>Coordonnées client</h2>
+
+                    <label>Nom de l'entreprise</label>
+                    <input id="companyName" type="text" name="" placeholder="Saisir un nom" required="">
+                    <label>Adresse</label>
+                    <input id="companyAdress" type="text" name="" placeholder="Saisir une adresse" required="">
+                    <label>CP/Ville</label>
+                    <input id="companyZip" type="text" name="" placeholder="Saisir un code postal" required="">
+                    <label>Nom du contact</label>
+                    <input id="companyContactName" type="text" name="" placeholder="Saisir un nom" required="">
+                    <label>Téléphone</label>
+                    <input id="companyContactPhone" type="text" name="" placeholder="Saisir un numéro de téléphone" required="">
+                    <label>Email</label>
+                    <input id="companyContactEmail" type="text" name="" placeholder="Saisir une adresse e-mail" required="">
+                </li>
+                <li>
+                    <h2>Responsable de l'offre</h2>
+
+                    <label>Prénom Nom</label>
+                    <input id="authorName" type="text" name="" placeholder="Saisir un nom" required="">
+                    <label>Téléphone</label>
+                    <input id="authorPhone" type="text" name="" placeholder="Saisir un numéro de téléphone" required="">
+                    <label>Email</label>
+                    <input id="authorEmail" type="text" name="" placeholder="Saisir une adresse e-mail" required="">
+                    <label>Fonction</label>
+                    <input id="authorJob" type="text" name="" placeholder="Saisir un poste" required="">
+                </li>
+                <li>
+                    <h2>Dimensionnement</h2>
+                    <label>Temperature de consigne (°C)</label>
+                    <input id="insideTemperature" type="text" name="" placeholder="Saisir une température de consigne" value="20" required="">
+
+                    <label>Département</label>
+                    <span class="select-menu">
+                        <select id="departement" required="required">
+                            <option disabled selected value>Sélectionner une option</option>
+                            <option value="#">01 - Ain</option>
+                            <option value="#">02 - Aisne</option>
+                            <option value="#">03 - Allier</option>
+                            <option value="#">04 - Alpes-de-Haute-Provence</option>
+                            <option value="#">05 - Hautes-alpes</option>
+                            <option value="#">06 - Nord - Alpes-maritimes</option>
+                            <option value="#">06 - Sud - Alpes-maritimes</option>
+                            <option value="#">07 - Ardèche</option>
+                            <option value="#">08 - Ardennes</option>
+                            <option value="#">09 - Ariège</option>
+                            <option value="#">10 - Aube</option>
+                            <option value="#">11 - Aude</option>
+                            <option value="#">12 - Nord - Aveyron</option>
+                            <option value="#">12 - Sud - Aveyron</option>
+                            <option value="#">13 - Bouches-du-Rhône</option>
+                            <option value="#">14 - Calvados</option>
+                            <option value="#">15 - Cantal</option>
+                            <option value="#">16 - Charente</option>
+                            <option value="#">17 - Charente-maritime</option>
+                            <option value="#">18 - Cher</option>
+                            <option value="#">19 - Corrèze</option>
+                            <option value="#">2A - Corse-du-sud</option>
+                            <option value="#">2B - Haute-Corse</option>
+                            <option value="#">21 - Côte-d'Or</option>
+                            <option value="#">22 - Côtes-d'Armor</option>
+                            <option value="#">23 - Creuse</option>
+                            <option value="#">24 - Dordogne</option>
+                            <option value="#">25 - Doubs</option>
+                            <option value="#">26 - Drôme</option>
+                            <option value="#">27 - Eure</option>
+                            <option value="#">28 - Eure-et-loir</option>
+                            <option value="#">29 - Finistère</option>
+                            <option value="#">30 - Gard</option>
+                            <option value="#">31 - Haute-garonne</option>
+                            <option value="#">32 - Gers</option>
+                            <option value="#">33 - Gironde</option>
+                            <option value="#">34 - Hérault</option>
+                            <option value="#">35 - Ille-et-vilaine</option>
+                            <option value="#">36 - Indre</option>
+                            <option value="#">37 - Indre-et-loire</option>
+                            <option value="#">38 - Isère</option>
+                            <option value="#">39 - Jura</option>
+                            <option value="#">40 - Landes</option>
+                            <option value="#">41 - Loir-et-cher</option>
+                            <option value="#">42 - Loire</option>
+                            <option value="#">43 - Haute-loire</option>
+                            <option value="#">44 - Loire-atlantique</option>
+                            <option value="#">45 - Loiret</option>
+                            <option value="#">46 - Lot</option>
+                            <option value="#">47 - Lot-et-garonne</option>
+                            <option value="#">48 - Lozère</option>
+                            <option value="#">49 - Maine-et-loire</option>
+                            <option value="#">50 - Manche</option>
+                            <option value="#">51 - Marne</option>
+                            <option value="#">52 - Haute-marne</option>
+                            <option value="#">53 - Mayenne</option>
+                            <option value="#">54 - Meurthe-et-moselle</option>
+                            <option value="#">55 - Meuse</option>
+                            <option value="#">56 - Morbihan</option>
+                            <option value="#">57 - Moselle</option>
+                            <option value="#">58 - Nièvre</option>
+                            <option value="#">59 - Nord</option>
+                            <option value="#">60 - Oise</option>
+                            <option value="#">61 - Orne</option>
+                            <option value="#">62 - Pas-de-calais</option>
+                            <option value="#">63 - Puy-de-dôme</option>
+                            <option value="#">64 - Pyrénées-atlantiques</option>
+                            <option value="#">65 - Hautes-Pyrénées</option>
+                            <option value="#">66 - Pyrénées-orientales</option>
+                            <option value="#">67 - Bas-rhin</option>
+                            <option value="#">68 - Haut-rhin</option>
+                            <option value="#">69 - Rhône</option>
+                            <option value="#">70 - Haute-saône</option>
+                            <option value="#">71 - Saône-et-loire</option>
+                            <option value="#">72 - Sarthe</option>
+                            <option value="#">73 - Savoie</option>
+                            <option value="#">74 - Haute-savoie</option>
+                            <option value="#">75 - Paris</option>
+                            <option value="#">76 - Seine-maritime</option>
+                            <option value="#">77 - Seine-et-marne</option>
+                            <option value="#">78 - Yvelines</option>
+                            <option value="#">79 - Deux-sèvres</option>
+                            <option value="#">80 - Somme</option>
+                            <option value="#">81 - Tarn</option>
+                            <option value="#">82 - Tarn-et-Garonne</option>
+                            <option value="#">83 - Nord - Var</option>
+                            <option value="#">83 - Sud - Var</option>
+                            <option value="#">84 - Vaucluse</option>
+                            <option value="#">85 - Vendée</option>
+                            <option value="#">86 - Vienne</option>
+                            <option value="#">87 - Haute-vienne</option>
+                            <option value="#">88 - Vosges</option>
+                            <option value="#">89 - Yonne</option>
+                            <option value="#">90 - Territoire de belfort</option>
+                            <option value="#">91 - Essonne</option>
+                            <option value="#">92 - Hauts-de-seine</option>
+                            <option value="#">93 - Seine-Saint-Denis</option>
+                            <option value="#">94 - Val-de-marne</option>
+                            <option value="#">95 - Val-d'Oise</option>
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+
+                    <label>Altitude</label>
+                    <span class="select-menu">
+                        <select id="altitude" required="required">
+                            <option disabled selected value>Sélectionner une option</option>
+                            <option value="#">0 à 200m</option>
+                            <option value="#">201 à 400m</option>
+                            <option value="#">401 à 600m</option>
+                            <option value="#">601 à 800m</option>
+                            <option value="#">801 à 1000m</option>
+                            <option value="#">1001 à 1200m</option>
+                            <option value="#">1201 à 1400m</option>
+                            <option value="#">1401 à 1600m</option>
+                            <option value="#">1601 à 1800m</option>
+                            <option value="#">1801 à 2000m</option>
+                            <option value="#">2001 à 2200m</option>
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+
+                    <label>T° extérieure de base (°C)</label>
+                    <input id="minimumOutsideTemperature" type="text" name="" placeholder="Remplissage automatique" value="" readonly>
+
+                    <label>Type de logement</label>
+                    <span class="select-menu">
+                        <select id="insulation" required="required">
+                            <option disabled selected value>Sélectionner une option</option>
+                            <option value="#">Maison neuve passive (10 W/m2)</option>
+                            <option value="#">Maison RE 2020</option>
+                            <option value="#">Maison RT 2012 BBIO Max</option>
+                            <option value="#">Isolation RT 2005</option>
+                            <option value="#">Isolation RT 2000</option>
+                            <option value="#">Maison après RT 1980 bien isolée</option>
+                            <option value="#">Maison moyennement isolée</option>
+                            <option value="#">Maison ancienne mur épais peu isolée</option>
+                            <option value="#">Bâtiment années 60</option>
+                            <option value="#">Bâtiment années 50 mal isolé</option>
+                            <option value="#">Véranda</option> 
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+
+                    <label>Coefficient G bâtiment (W/m2/K)</label>
+                    <input id="gCoefficient" class="insulationAction" type="text" name="" placeholder="Remplissage automatique" value="" readonly>
+
+                    <label>Surface (m2)</label>
+                    <input id="floorSpace" type="text" name="" value="" placeholder="Saisir une surface" required="">
+
+                    <label>Hauteur sous plafond moyenne (m)</label>
+                    <input id="height" type="text" name="" value="" placeholder="Saisir une hauteur sous plafond" required="">
+
+                    <label>Volume (m3)</label>
+                    <input id="volume" type="text" name="" placeholder="Remplissage automatique" value="" readonly>
+
+                    <label>Déperditions (kW)</label>
+                    <input id="heatLosses"type="text" name="" placeholder="Remplissage automatique" value="" readonly>
+                </li>
+                <li>
+                    <h2>Type de PAC</h2>
+
+                    <label>Type de PAC</label>
+                    <span class="select-menu">
+                        <select id="heatPump" required="required">
+                            <option disabled selected value>Sélectionner une option</option>
+                            <option value="#">Compress 7000</option>
+                            <option value="#">Compress 7400</option>
+                            <!--<option value="#">Compress 3400</option>-->
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+                </li>
+                <li>
+                    <h2>Sélection de la PAC</h2>
+
+                    <label>Déperditions retenues (kW)</label>
+                    <input id="heatLossesChosen" type="text" name="" value="" placeholder="Saisissez les déperditions retenues" required="">
+
+                    <label>Type de courant</label>
+                    <span class="select-menu">
+                        <select id="electricalSupply" required="required">
+                            <option disabled selected value>Sélectionner une option</option>
+                            <option value="#">Monophasé</option>
+                            <option value="#">Triphasé</option>
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+
+                    <label>Type d'émetteurs</label>
+                    <span class="select-menu">
+                        <select id="heater" required="required">
+                            <option disabled selected value>Sélectionner une option</option>
+                            <option value="#">Plancher chauffant : 35°C</option>
+                            <option value="#">Radiateur BT : 45°C</option>
+                            <option value="#">Radiateur classique : 55°C</option>
+                            <option value="#">Mixte (PC + radiateurs) : 55°C</option>
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+
+                    <label>Type de robinets (circuit radiateur)</label>
+                    <span class="select-menu">
+                        <select id="thermostatiqueValve" required="required">
+                            <option disabled selected value>Sélectionner une option</option>
+                            <option value="#">Robinets thermostatique</option>
+                            <option value="#">Robinets simple</option>
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+
+                    <label>Pompe à chaleur sélectionnée</label>
+                    <input id="selectedHeatPump" type="text" name="" placeholder="Remplissage automatique" value="" readonly>
+
+                    <label>Volume tampon estimé (L)</label>
+                    <input id="buffer" type="text" name="" placeholder="Remplissage automatique" value="" readonly>
+
+                    <label>Circuit(s) demandé(s)</label>
+                    <span class="select-menu">
+                        <select id="heatCircuit" required="required">
+                            <option disabled selected value>Sélectionner une option</option>
+                            <option value="#">1 Radiateur</option>
+                            <option value="#">1 Plancher chauffant</option>
+                            <option value="#">1 Radiateur + 1 Plancher chauffant</option>
+                            <option value="#">1 Radiateur + ECS</option>
+                            <option value="#">1 Plancher chauffant + ECS</option>
+                            <option value="#">1 Plancher chauffant + 1 radiateur + ECS</option>
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+                    <p class="error-pop-up" style="color: red;"></p>
+                    <button class="normal-btn validateInformations">
+                        <p>Valider les informations</p>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div id='quote-page'>
+            <h2>Modification et export du projet</h2>
+
+            <div id="toolbar-container">
+                <div>
+                    <div>
+                        <p>PTHT</p>
+                        <p class="euro quote-price">0.00</p>
+                        <div class="number-line"></div>
+                    </div>
+
+                    <div>
+                        <p>PT TTC</p>
+                        <p class="euro quote-eco-part">0.00</p>
+                        <div class="number-line"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="normal-btn print-pdf">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform:;-ms-filter:"><path d="M11 16L13 16 13 7 16 7 12 2 8 7 11 7z"></path><path d="M5,22h14c1.103,0,2-0.897,2-2v-9c0-1.103-0.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103,0-2,0.897-2,2v9C3,21.103,3.897,22,5,22 z"></path></svg>
+                        <p>Exporter PDF</p>
+                    </button>
+                    <button id="add-section-button" class="normal-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+                        <p>Ajouter ligne</p>
+                    </button>
+                </div>
+            </div>
+
+            <hr>
+
+            <table id="quote-creator-container">
+                <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Désignation</th>
+                        <th>Prix unitaire</th>
+                        <th>Quantité</th>
+                        <th>Prix TTC</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="items-section">
+                </tbody>
+            </table>
+        </div>
+
+        <div id='documentation-page'>
+            <h2>Documentation</h2>
+            <p>Documentation en cours d'écriture.</p>
+        </div>
+
+        <div id='contact-page'>
+            <h2>Contact</h2>
+            <p>Pour toute question vous pouvez contacter le service avant-vente à l'adresse e-mail suivante : bosch-elm.avantvente@fr.bosch.com</p>
+        </div>
+
+        <!-- POP UP -->
+
+        <div class="pop-up-window add-section form">
+            <svg class="close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M9.172 16.242 12 13.414l2.828 2.828 1.414-1.414L13.414 12l2.828-2.828-1.414-1.414L12 10.586 9.172 7.758 7.758 9.172 10.586 12l-2.828 2.828z"></path><path d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z"></path></svg>
+            <h3>Ajouter une catégorie</h3>
+            <label>Exemple : chaufferie, groupe VRV, variante...</label>
+            <input type="text" name="" placeholder="Saisir ici">
+            <button class="normal-btn">Ajouter</button>
+        </div>
+
+        <div class="pop-up-window form pop-up-item">
+            <svg class="close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M9.172 16.242 12 13.414l2.828 2.828 1.414-1.414L13.414 12l2.828-2.828-1.414-1.414L12 10.586 9.172 7.758 7.758 9.172 10.586 12l-2.828 2.828z"></path><path d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z"></path></svg>
+            <h3>Rechercher un produit</h3>
+            <div class="tab">
+                <button class="reference active">Référence</button>
+                <button class="range">Gamme</button>
+                <button class="name">Désignation</button>
+                <button class="start-up">SAV-MES</button>
+            </div>
+            <!--SAV - MES-->
+            <div class="display-tab toogle-tab displayed-tab">
+                <!--Find by reference-->
+                <input type="text" placeholder="Référence" class="input-by-reference displayed-tab toogle-tab">
+
+                <!--Find by range-->
+                <span class="select-menu toogle-tab">
+                    <select required="required">
+                        <option value="#" disabled selected>Choisissez une gamme</option>
+                    </select>
+           
+                    <svg id="svg-arrow" viewBox="0 0 10 6">
+                        <polyline points="1 1 5 5 9 1"></polyline>
+                    </svg>
+                </span>
+
+                <!--Find by name-->
+                <input type="text" placeholder="Désignation du produit" class="input-by-name toogle-tab">
+
+            </div>
+            
+            <p><strong>Article trouvé :</strong></p>
+            <!--Find by reference-->
+            <p class="single-result toogle-tab displayed-tab">Pas d'article correspondant</p>
+
+            <!--Others-->
+            <span class="select-menu result-items toogle-tab">
+                <select required="required">
+                    <option value="#" disabled selected>Choisissez un article</option>
+                    <option value="#">Pas d'article correspondant</option>
+                </select>
+       
+                <svg id="svg-arrow" viewBox="0 0 10 6">
+                    <polyline points="1 1 5 5 9 1"></polyline>
+                </svg>
+            </span>
+
+
+            <input class="quantity-input" type="text" placeholder="Quantité">
+            <!--Not for SAV-->
+            <span class="checkbox">
+                <label class="switch toogle-tab displayed-tab">
+                  <input type="checkbox">
+                  <span class="slider round"></span>
+                </label>
+                <label class="toogle-tab displayed-tab">Ajouter les accessoires</label>
+            </span>
+            <p class="item-error"></p>
+            <button class="normal-btn">Ajouter</button>
+        </div>
+    </main>
+  </body>
+  <script src="JS/main.js"></script>
+</html>
