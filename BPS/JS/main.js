@@ -488,7 +488,8 @@
             schemaMono: "https://raw.githubusercontent.com/EdernClemente/edernclemente.github.io/main/img/8663406D-E6FE-4377-9A94-BB8A2BAE1DE8.png",
             schemaTri: "https://raw.githubusercontent.com/EdernClemente/edernclemente.github.io/main/img/410D0AF7-D031-4E20-A5C3-01174129F858.png",
           }
-
+      
+      this.model.setData(this.view.getData())
       let data = this.model.getData()
 
       const { jsPDF } = window.jspdf
