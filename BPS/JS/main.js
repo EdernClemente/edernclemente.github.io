@@ -681,27 +681,25 @@
 
       let schema
 
-      if(data.heatPumpIndex == 1) {
-        switch(d.heatCircuitIndex) {
-          case 1:
-            schema = imgData['schema1CircuitRad']
-            break
-          case 2:
-            schema = imgData['schema1CircuitPC']
-            break
-          case 3:
-            schema = imgData['schema1CircuitRad1CircuitPC']
-            break
-          case 4:
-            schema = imgData['schema1CircuitRadECS']
-            break
-          case 5:
-            schema = imgData['schema1CircuitRadECS']
-            break
-          case 6:
-            schema = imgData['schema1CircuitRad1CircuitPCECS']
-            break
-        }
+      switch(data.heatCircuitIndex) {
+        case 1:
+          schema = imgData['schema1CircuitRad']
+          break
+        case 2:
+          schema = imgData['schema1CircuitPC']
+          break
+        case 3:
+          schema = imgData['schema1CircuitRad1CircuitPC']
+          break
+        case 4:
+          schema = imgData['schema1CircuitRadECS']
+          break
+        case 5:
+          schema = imgData['schema1CircuitRadECS']
+          break
+        case 6:
+          schema = imgData['schema1CircuitRad1CircuitPCECS']
+          break
       }
 
       doc.addImage(schema, "PNG", 70, 165, 556/8, 974/8)
