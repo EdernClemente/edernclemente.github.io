@@ -967,6 +967,15 @@ input:checked + .slider:before {
   header img {
     margin: 1rem 0;
   }
+
+  #items-section {
+    font-size: 10px;
+  }
+
+  thead tr {
+    font-size: 10px;
+    word-break: break-word;
+  }
 }
 
 @media screen and (min-width: 768px) {
