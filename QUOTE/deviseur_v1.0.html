@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <title>Quote calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="src/css/deviseur.css">
+
+    <!-- Js PDF -->
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable"></script>
+  </head>
+  <body>
+    <header>
+        <div>
+            <img src="src/images/logo.png">
+            <h1>Quote calculator</h1>
+        </div>
+        <svg id="header-toggle" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform:;-ms-filter:;"><path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"></path></svg>
+    </header>
+
+    <nav id="navbar">
+        <div class="nav__container">
+            <div>
+                <div class="nav__logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" style="transform:;-ms-filter:;"><path d="M4 6H20V8H4zM4 11H20V13H4zM4 16H20V18H4z"></path></svg>
+                </div>
+
+                <div class="nav__list">
+                    <div class="nav__items">
+                        <h3>Menu</h3>
+
+                        <a href="#home" class="home-link nav__link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" style="transform:;-ms-filter:"><path d="M3,13h1v2v5c0,1.103,0.897,2,2,2h3h6h3c1.103,0,2-0.897,2-2v-5v-2h1c0.404,0,0.77-0.244,0.924-0.617 c0.155-0.374,0.069-0.804-0.217-1.09l-9-9c-0.391-0.391-1.023-0.391-1.414,0l-9,9c-0.286,0.286-0.372,0.716-0.217,1.09 C2.23,12.756,2.596,13,3,13z M10,20v-5h4v5H10z M12,4.414l6,6V15l0,0l0.001,5H16v-5c0-1.103-0.897-2-2-2h-4c-1.103,0-2,0.897-2,2v5 H6v-5v-3v-1.586L12,4.414z"></path></svg>
+                            <span>Accueil</span>
+                        </a>
+
+                        <a href="#informations" class="informations-link nav__link">
+                            <svg class="icon locked" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" style="transform:;-ms-filter:"><path d="M15 11H22V13H15zM16 15H22V17H16zM14 7H22V9H14zM4 19h8 1 1v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h1H4zM8 12c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z"></path></svg>
+                            <span class="locked">Informations</span>
+                            <svg class="lock locked" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M20 12c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5S7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"></path></svg>
+                        </a>
+
+                        <a href="#quote" class="quote-link nav__link">
+                            <svg class="icon locked" xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" style="transform:;-ms-filter:"><path transform="rotate(45.001 19.345 4.656)" d="M17.223 3.039H21.466V6.273H17.223z"></path><path d="M8 16L11 16 18.287 8.713 15.287 5.713 8 13z"></path><path d="M19,19H8.158c-0.026,0-0.053,0.01-0.079,0.01c-0.033,0-0.066-0.009-0.1-0.01H5V5h6.847l2-2H5C3.897,3,3,3.896,3,5v14 c0,1.104,0.897,2,2,2h14c1.104,0,2-0.896,2-2v-8.668l-2,2V19z"></path></svg>
+                            <span class="locked">Devis</span>
+                            <svg class="lock locked" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M20 12c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5S7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8zM9 7c0-1.654 1.346-3 3-3s3 1.346 3 3v3H9V7z"></path></svg>
+                        </a>
+
+                        <div class="nav__dropdown">
+                            <a class="nav__link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 24 24" style="transform:;-ms-filter:"><path d="M12 6C9.831 6 8.066 7.765 8.066 9.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626-.255.207-.496.404-.691.599C11.029 13.156 11 14.215 11 14.333V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182C15.934 7.765 14.169 6 12 6zM11 16H13V18H11z"></path><path d="M12,2C6.486,2,2,6.486,2,12s4.486,10,10,10s10-4.486,10-10S17.514,2,12,2z M12,20c-4.411,0-8-3.589-8-8s3.589-8,8-8 s8,3.589,8,8S16.411,20,12,20z"></path></svg>
+                                <span>Aide</span>
+                                <svg class='nav__dropdown-icon' xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill:rgba(0, 0, 0, 1);transform:;-ms-filter:"><path d="M16.293 9.293L12 13.586 7.707 9.293 6.293 10.707 12 16.414 17.707 10.707z"></path></svg>
+                            </a>
+
+                            <div class="nav__dropdown-collapse">
+                                <div class="nav__dropdown-content">
+                                    <a href="#documentation" class="documentation-link nav__link">Documentation</a>
+                                    <a href="#contact" class="contact-link nav__link">Contact</a>
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div id='home-page'>
+            <h2>Accès rapide</h2>
+            <p>Vous pouvez créer ou importer un projet pour l'éditer.</p>
+            <div class="quick-access-container">
+                <button class="normal-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255);transform: ;msFilter:;"><path d="M20,2H8C6.897,2,6,2.897,6,4v12c0,1.103,0.897,2,2,2h12c1.103,0,2-0.897,2-2V4C22,2.897,21.103,2,20,2z M8,16V4h12 l0.002,12H8z"></path><path d="M4 8H2v12c0 1.103.897 2 2 2h12v-2H4V8zM15 6L13 6 13 9 10 9 10 11 13 11 13 14 15 14 15 11 18 11 18 9 15 9z"></path></svg>
+                    <p>Nouveau projet</p>
+                </button>
+                <button class="normal-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: var(--text-color);transform: ;msFilter:;"><path d="M12 18L16 13 13 13 13 2 11 2 11 13 8 13z"></path><path d="M19,9h-4v2h4v9H5v-9h4V9H5c-1.103,0-2,0.897-2,2v9c0,1.103,0.897,2,2,2h14c1.103,0,2-0.897,2-2v-9C21,9.897,20.103,9,19,9 z"></path></svg>
+                    <p>Importer un projet</p>
+                </button>
+            </div>
+            <h2>Statistique</h2>
+            <p>Votre activité depuis le 01/06/21 :</p>
+                <div class="wrap-container">
+                    <div class="card">
+                        <p></p>
+                        <p>devis réalisés</p>
+                    </div>
+                    <div class="card">
+                        <p></p>
+                        <p>euros chiffrés</p>
+                    </div>
+                    <div class="card">
+                        <p></p>
+                        <p>remise moyenne</p>
+                    </div>
+                </div>
+            <p>v1.0</p>
+        </div>
+
+        <div id='informations-page' class="form">
+            <ul>
+                <li>
+                    <h2>Informations projet</h2>
+
+                    <label>Nom du projet</label>
+                    <input id="project-name-info" type="text" name="" placeholder="Saisir un nom" required="">
+                    <label>Type de devis</label>
+                    <span class="select-menu">
+                        <select id="quote-type-info" required="required">
+                            <option value="#" selected="selected">Bosch tertiaire VRF</option>
+                            <option value="#">Bosch tertiaire</option>
+                            <option value="#">Elm leblanc</option>
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <h2>Contact commercial</h2>
+
+                    <label>Secteur</label>
+                    <span class="select-menu">
+                        <select id="area-info" required="required">
+                            <option value="#" selected="selected">TTSFR1</option>
+                            <option value="#">TTSFR3</option>
+                            <option value="#">TTSFR11</option>
+                            <option value="#">TTSFR12</option>
+                            <option value="#">TTSFR13</option>
+                            <option value="#">TTSFR14</option>
+                            <option value="#">TTSFR15</option>
+                            <option value="#">TTSFR16</option>
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+                    <label>Prénom Nom</label>
+                    <span class="select-menu">
+                        <select id="sales-rep-name-info" required="required">
+                            <!--<option value="#" selected="selected">Clemente Edern</option>
+                            <option value="#">Hervoir Jacques</option>-->
+                        </select>
+               
+                        <svg id="svg-arrow" viewbox="0 0 10 6">
+                            <polyline points="1 1 5 5 9 1"></polyline>
+                        </svg>
+                    </span>
+                    <label>Téléphone</label>
+                    <input id="sales-rep-phone" type="text" name="" placeholder="Remplissage automatique" value="" readonly>
+                    <label>Mail</label>
+                    <input id="sales-rep-email" type="text" name="" placeholder="Remplissage automatique" value="" readonly>
+                </li>
+                <li>
+                    <h2>Coordonnées du demandeur</h2>
+
+                    <label>Prénom Nom</label>
+                    <input id="company-name-info" type="text" name="" placeholder="Saisir un nom" required="">
+                    <label>Adresse</label>
+                    <input id="company-adress-info" type="text" name="" placeholder="Saisir une adresse" required="">
+                    <label>CP/Ville</label>
+                    <input id="company-zip-info" type="text" name="" placeholder="Saisir un code postal" required="">
+                </li>
+                <li>
+                    <h2>Contact du demandeur</h2>
+
+                    <label>Prénom Nom</label>
+                    <input id="client-name-info" type="text" name="" placeholder="Saisir un nom" required="">
+                    <label>Téléphone</label>
+                    <input id="client-phone-info" type="text" name="" placeholder="Saisir un téléphone" required="">
+                    <label>Email</label>
+                    <input id="client-email-info" type="text" name="" placeholder="Saisir une adresse email" required="">
+                </li>
+                <li>
+                    <h2>Responsable de l'offre</h2>
+
+                    <label>Prénom Nom</label>
+                    <input id="author-name-info" type="text" name="" placeholder="Saisir un nom" required="">
+                    <label>Qualité</label>
+                    <input id="author-job-info" type="text" name="" placeholder="Saisir un poste" required="">
+                </li>
+                <li>
+                    <h2>Directeur régional</h2>
+
+                    <label>Prénom Nom</label>
+                    <input id="manager-name-info" type="text" name="" placeholder="Saisir un nom" required="">
+                    <label>Qualité</label>
+                    <input id="manager-job-info" type="text" name="" placeholder="Saisir un poste" required="">
+                </li>
+            </ul>
+        </div>
+
+        <div id='quote-page'>
+            <h2>Création du devis</h2>
+            <div id="discount-container">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="m20.749 12 1.104-1.908a1 1 0 0 0-.365-1.366l-1.91-1.104v-2.2a1 1 0 0 0-1-1h-2.199l-1.103-1.909a1.008 1.008 0 0 0-.607-.466.993.993 0 0 0-.759.1L12 3.251l-1.91-1.105a1 1 0 0 0-1.366.366L7.62 4.422H5.421a1 1 0 0 0-1 1v2.199l-1.91 1.104a.998.998 0 0 0-.365 1.367L3.25 12l-1.104 1.908a1.004 1.004 0 0 0 .364 1.367l1.91 1.104v2.199a1 1 0 0 0 1 1h2.2l1.104 1.91a1.01 1.01 0 0 0 .866.5c.174 0 .347-.046.501-.135l1.908-1.104 1.91 1.104a1.001 1.001 0 0 0 1.366-.365l1.103-1.91h2.199a1 1 0 0 0 1-1v-2.199l1.91-1.104a1 1 0 0 0 .365-1.367L20.749 12zM9.499 6.99a1.5 1.5 0 1 1-.001 3.001 1.5 1.5 0 0 1 .001-3.001zm.3 9.6-1.6-1.199 6-8 1.6 1.199-6 8zm4.7.4a1.5 1.5 0 1 1 .001-3.001 1.5 1.5 0 0 1-.001 3.001z"></path></svg>
+                    <p>Remise :</p>
+                    <input class="input-discount" type="text" value="0" name="">
+                    <p>%</p>
+                    <input class="input-discount" type="text" value="0" name="">
+                    <p>%</p>
+                    <input class="input-discount" type="text" value="0" name="">
+                    <p>%</p>
+                </div>
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M6 22h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2zm3-3H7v-2h2v2zm0-4H7v-2h2v2zm0-4H7V9h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm4 8h-2v-6h2v6zm0-8h-2V9h2v2zM6 4h12v3H6V4z"></path></svg>
+                    <p>Remise totale :</p>
+                    <input class="total-discount" type="text" value="0" name="" readonly="readonly">
+                    <p>%</p>
+                </div>
+            </div>
+
+            <div id="toolbar-container">
+                <div>
+                    <div>
+                        <p>PHT</p>
+                        <p class="euro quote-price">0.00</p>
+                        <div class="number-line"></div>
+                    </div>
+
+                    <div>
+                        <p>ECO PART</p>
+                        <p class="euro quote-eco-part">0.00</p>
+                        <div class="number-line"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="normal-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform:;-ms-filter:"><path fill="none" d="M9 14H15V19H9zM11 5H13V7H11z"></path><path fill="none" d="M7,14c0-1.103,0.897-2,2-2h6c1.103,0,2,0.897,2,2v5h2.001L19,8.414L15.586,5H15v4h-1h-1h-2H9H7V5H5v14h2V14z"></path><path d="M5,21h14c1.103,0,2-0.897,2-2V8c0-0.265-0.105-0.52-0.293-0.707l-4-4C16.52,3.105,16.266,3,16,3H5C3.897,3,3,3.897,3,5v14 C3,20.103,3.897,21,5,21z M15,19H9v-5h6V19z M13,7h-2V5h2V7z M5,5h2v4h2h2h2h1h1V5h0.586L19,8.414L19.001,19H17v-5 c0-1.103-0.897-2-2-2H9c-1.103,0-2,0.897-2,2v5H5V5z"></path></svg>
+                        <p>Sauvegarder</p>
+                    </button>
+                    <button class="normal-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform:;-ms-filter:"><path d="M11 16L13 16 13 7 16 7 12 2 8 7 11 7z"></path><path d="M5,22h14c1.103,0,2-0.897,2-2v-9c0-1.103-0.897-2-2-2h-4v2h4v9H5v-9h4V9H5c-1.103,0-2,0.897-2,2v9C3,21.103,3.897,22,5,22 z"></path></svg>
+                        <p>Exporter PDF</p>
+                    </button>
+                    <button id="add-section-button" class="normal-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+                        <p>Ajouter</p>
+                    </button>
+                </div>
+            </div>
+
+            <hr>
+
+            <table id="quote-creator-container">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Référence</th>
+                        <th>Matériel</th>
+                        <th>Quantité</th>
+                        <th>PPHT</th>
+                        <th>Eco-part</th>
+                        <th>Rem sup</th>
+                        <th>PTHT</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id='documentation-page'>
+            <h2>Documentation</h2>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt vel illum fuga unde cum, voluptates magni molestias eveniet culpa autem ut, totam veniam, suscipit tempore ullam pariatur est at asperiores?</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt vel illum fuga unde cum, voluptates magni molestias eveniet culpa autem ut, totam veniam, suscipit tempore ullam pariatur est at asperiores?</p>
+        </div>
+
+        <div id='contact-page'>
+            <h2>Contact</h2>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt vel illum fuga unde cum, voluptates magni molestias eveniet culpa autem ut, totam veniam, suscipit tempore ullam pariatur est at asperiores?</p>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt vel illum fuga unde cum, voluptates magni molestias eveniet culpa autem ut, totam veniam, suscipit tempore ullam pariatur est at asperiores?</p>
+        </div>
+
+        <!-- POP UP -->
+
+        <div class="pop-up-window add-section form">
+            <svg class="close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M9.172 16.242 12 13.414l2.828 2.828 1.414-1.414L13.414 12l2.828-2.828-1.414-1.414L12 10.586 9.172 7.758 7.758 9.172 10.586 12l-2.828 2.828z"></path><path d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z"></path></svg>
+            <h3>Ajouter une catégorie</h3>
+            <label>Exemple : chaufferie, groupe VRV, variante...</label>
+            <input type="text" name="" placeholder="Saisir ici">
+            <button class="normal-btn">Ajouter</button>
+        </div>
+
+        <div class="pop-up-window form pop-up-item">
+            <svg class="close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: ;msFilter:;"><path d="M9.172 16.242 12 13.414l2.828 2.828 1.414-1.414L13.414 12l2.828-2.828-1.414-1.414L12 10.586 9.172 7.758 7.758 9.172 10.586 12l-2.828 2.828z"></path><path d="M12 22c5.514 0 10-4.486 10-10S17.514 2 12 2 2 6.486 2 12s4.486 10 10 10zm0-18c4.411 0 8 3.589 8 8s-3.589 8-8 8-8-3.589-8-8 3.589-8 8-8z"></path></svg>
+            <h3>Rechercher un produit</h3>
+            <div class="tab">
+                <button class="reference active">Référence</button>
+                <button class="range">Gamme</button>
+                <button class="name">Désignation</button>
+                <button class="start-up">SAV-MES</button>
+            </div>
+            <!--SAV - MES-->
+            <div class="display-tab toogle-tab displayed-tab">
+                <!--Find by reference-->
+                <input type="text" placeholder="Référence" class="input-by-reference displayed-tab toogle-tab">
+
+                <!--Find by range-->
+                <span class="select-menu toogle-tab">
+                    <select required="required">
+                        <option value="#" disabled selected>Choisissez une gamme</option>
+                    </select>
+           
+                    <svg id="svg-arrow" viewBox="0 0 10 6">
+                        <polyline points="1 1 5 5 9 1"></polyline>
+                    </svg>
+                </span>
+
+                <!--Find by name-->
+                <input type="text" placeholder="Désignation du produit" class="input-by-name toogle-tab">
+
+            </div>
+            
+            <p><strong>Article trouvé :</strong></p>
+            <!--Find by reference-->
+            <p class="single-result toogle-tab displayed-tab">Pas d'article correspondant</p>
+
+            <!--Others-->
+            <span class="select-menu result-items toogle-tab">
+                <select required="required">
+                    <option value="#" disabled selected>Choisissez un article</option>
+                    <option value="#">Pas d'article correspondant</option>
+                </select>
+       
+                <svg id="svg-arrow" viewBox="0 0 10 6">
+                    <polyline points="1 1 5 5 9 1"></polyline>
+                </svg>
+            </span>
+
+
+            <input class="quantity-input" type="text" placeholder="Quantité">
+            <!--Not for SAV-->
+            <span class="checkbox">
+                <label class="switch toogle-tab displayed-tab">
+                  <input type="checkbox">
+                  <span class="slider round"></span>
+                </label>
+                <label class="toogle-tab displayed-tab">Ajouter les accessoires</label>
+            </span>
+            <p class="item-error"></p>
+            <button class="normal-btn">Ajouter</button>
+        </div>
+    </main>
+  </body>
+
+  <script src="src/js/navbar.js"></script>
+  <script src="src/js/app.js"></script>
+  </html>
